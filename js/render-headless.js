@@ -128,9 +128,13 @@
     }
 
     // Desactivar síntesis de voz del navegador y audio WebAudio si ffmpeg mezclará el audio limpio
+    if (typeof ttsEnabled !== 'undefined') ttsEnabled = false;
     window.ttsEnabled = false;
+    if (typeof sfxEnabled !== 'undefined') sfxEnabled = false;
     window.sfxEnabled = false;
+    if (typeof bgmEnabled !== 'undefined') bgmEnabled = false;
     window.bgmEnabled = false;
+    if (typeof isPlaying !== 'undefined') isPlaying = true;
     window.isPlaying = true;
     window.isCleanRecordingActive = true;
 
@@ -145,6 +149,7 @@
       }
     }
 
+    if (typeof currentConfig !== 'undefined') currentConfig = prepared;
     window.currentConfig = prepared;
     applyAspectClass(prepared.aspectRatio || '9:16');
     applyBrandVisuals(prepared);
@@ -171,6 +176,7 @@
     const rawDur = Number(durationMsOverride || sc.duration || 4200);
     activeSceneDurationMs = Math.max(2500, Math.min(16000, rawDur < 100 ? rawDur * 1000 : rawDur));
 
+    if (typeof isPlaying !== 'undefined') isPlaying = true;
     window.isPlaying = true;
     window.renderScene(sceneIndex);
     triggerSceneBeats(sc, activeSceneDurationMs);

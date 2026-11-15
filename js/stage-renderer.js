@@ -892,11 +892,15 @@
             updateContextualParticles(scene.environment);
             updateAmbientOrbs(scene.environment);
 
-            document.getElementById('stage-top-domain').textContent = `🌐 ${currentConfig.domain || 'nakkio.com'}`;
-            document.getElementById('stage-top-tag').textContent = currentConfig.brand || '@nachotechrd';
-            document.getElementById('brand-watermark').textContent = `${currentConfig.brand} • ${currentConfig.domain}`;
-            document.getElementById('scene-counter-badge').textContent = `Escena ${index + 1}/${scenes.length}`;
-            document.getElementById('total-scenes-count').textContent = scenes.length;
+            const setTextIfPresent = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            };
+            setTextIfPresent('stage-top-domain', `🌐 ${currentConfig.domain || 'nakkio.com'}`);
+            setTextIfPresent('stage-top-tag', currentConfig.brand || '@nachotechrd');
+            setTextIfPresent('brand-watermark', `${currentConfig.brand || ''} • ${currentConfig.domain || 'nakkio.com'}`);
+            setTextIfPresent('scene-counter-badge', `Escena ${index + 1}/${scenes.length}`);
+            setTextIfPresent('total-scenes-count', scenes.length);
 
             updateTotalDurationBadge();
             renderProgressBars();
