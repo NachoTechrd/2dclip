@@ -1,0 +1,16 @@
+{
+  "name": "videos-2d-ia-studio",
+  "version": "2.0.0",
+  "description": "Estudio 2D con IA, sincronización multidispositivo MongoDB Atlas y Cloudinary",
+  "main": "api/tts.js",
+  "scripts": {
+    "test": "node scratch/test_all_graphics.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.5.0",
+    "cloudinary": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5"
+  }
+}

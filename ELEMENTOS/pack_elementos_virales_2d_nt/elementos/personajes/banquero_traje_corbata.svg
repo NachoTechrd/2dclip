@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bankerGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="suitNavy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="goldTie" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="hatGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="shadowBanker" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="7" flood-color="#020617" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="195" r="175" fill="url(#bankerGlow)"/>
+  <ellipse cx="200" cy="368" rx="115" ry="15" fill="#020617" opacity="0.45"/>
+
+  <g filter="url(#shadowBanker)">
+    <!-- Shoulders & Luxury Suit -->
+    <path d="M88,354 C92,250 132,216 200,216 C268,216 308,250 312,354 Z" fill="url(#suitNavy)" stroke="#0f172a" stroke-width="5"/>
+    <!-- Crisp White Shirt V -->
+    <polygon points="168,218 232,218 200,305" fill="#f8fafc" stroke="#0f172a" stroke-width="3"/>
+    <!-- Gold Tie -->
+    <polygon points="193,234 207,234 212,300 200,316 188,300" fill="url(#goldTie)" stroke="#0f172a" stroke-width="3"/>
+    <!-- Gold Pocket Square & Lapel Pin -->
+    <polygon points="242,262 268,252 264,270 242,272" fill="#facc15" stroke="#0f172a" stroke-width="2.5"/>
+    <circle cx="152" cy="256" r="6" fill="#facc15"/>
+
+    <!-- Neck & Face -->
+    <rect x="180" y="190" width="40" height="32" rx="8" fill="#fdba74" stroke="#0f172a" stroke-width="4"/>
+    <rect x="136" y="96" width="128" height="106" rx="48" fill="#fed7aa" stroke="#0f172a" stroke-width="5"/>
+
+    <!-- Silver / Salt-and-Pepper Sideburns -->
+    <path d="M138,128 L148,128 L146,158 L138,154 Z" fill="#94a3b8"/>
+    <path d="M262,128 L252,128 L254,158 L262,154 Z" fill="#94a3b8"/>
+
+    <!-- Executive Top Hat / Fedora -->
+    <rect x="148" y="34" width="104" height="66" rx="14" fill="url(#hatGrad)" stroke="#0f172a" stroke-width="5"/>
+    <rect x="148" y="82" width="104" height="14" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+    <rect x="116" y="92" width="168" height="16" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="4"/>
+
+    <!-- Sunglasses / Monocle Glow -->
+    <rect x="148" y="130" width="46" height="26" rx="8" fill="#020617" stroke="#facc15" stroke-width="3"/>
+    <rect x="206" y="130" width="46" height="26" rx="8" fill="#020617" stroke="#facc15" stroke-width="3"/>
+    <line x1="194" y1="141" x2="206" y2="141" stroke="#facc15" stroke-width="3.5"/>
+    <path d="M154,134 L172,134 L158,150 Z" fill="#ffffff" opacity="0.25"/>
+    <path d="M212,134 L230,134 L216,150 Z" fill="#ffffff" opacity="0.25"/>
+
+    <!-- Smirk & Mustache -->
+    <path d="M174,168 Q200,160 226,168" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+    <path d="M184,180 Q204,188 220,176" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Floating Cash Bag / Dollar Emblem -->
+    <circle cx="308" cy="196" r="28" fill="#10b981" stroke="#0f172a" stroke-width="4">
+      <animateTransform attributeName="transform" type="translate" values="0,0; 0,-6; 0,0" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+    <text x="308" y="206" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="28" fill="#ecfdf5">$</text>
+  </g>
+</svg>

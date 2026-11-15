@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NACHOTECH // 2D CLOUD STORY ENGINE v5.0 PRO (ElevenLabs & 33 Plantillas 9:16)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/assets_catalogo.js"></script>
+    <script src="assets_catalogo.js"></script>
+    <script src="/js/data-catalog-fallback.js"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- AUTHENTICATION / LICENSE & ACCOUNT GATE (OVERLAY) -->
+    <div id="auth-gate-overlay" class="fixed inset-0 z-[100] bg-[#050811]/95 backdrop-blur-2xl flex items-center justify-center p-4">
+        <div class="bg-[#0b101c] border-2 border-amber-500/50 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl text-center space-y-4 relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-52 h-52 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-52 h-52 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 mx-auto flex items-center justify-center text-2xl shadow-xl shadow-amber-500/30">
+                🎬
+            </div>
+
+            <div class="space-y-1">
+                <h2 class="text-xl font-black text-white">2DClip Studio Pro</h2>
+                <p class="text-xs text-slate-400">Inicia sesión para conservar tus proyectos, claves API y recursos en la nube</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                <button type="button" id="gate-tab-login" onclick="setGateAuthMode('login')" class="py-1.5 rounded-lg text-xs font-black bg-amber-500 text-slate-950 transition">Iniciar Sesión</button>
+                <button type="button" id="gate-tab-register" onclick="setGateAuthMode('register')" class="py-1.5 rounded-lg text-xs font-black text-slate-400 hover:text-white transition">Crear Cuenta</button>
+            </div>
+
+            <form onsubmit="handleGateAuthSubmit(event)" class="space-y-3 text-left">
+                <div id="gate-name-wrap" class="hidden">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">Tu Nombre o Marca:</label>
+                    <input id="auth-name" type="text" placeholder="Ej. Nacho Tech" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">Correo Electrónico:</label>
+                    <input id="auth-email" type="text" placeholder="tu@correo.com (o vacío si usas clave de licencia)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-200 focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">Contraseña o Clave de Acceso:</label>
+                    <input id="auth-password" type="password" placeholder="Introduce tu contraseña..." required autofocus class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div id="gate-auth-error-msg" class="hidden text-xs font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30 rounded-xl p-2.5 text-center">
+                    ❌ Credenciales incorrectas. Verifica tu correo/contraseña.
+                </div>
+
+                <button id="gate-auth-submit" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-xl shadow-amber-500/30 transition transform hover:scale-[1.01]">
+                    🔓 Entrar al Studio Pro
+                </button>
+            </form>
+
+            <button type="button" onclick="enterStudioAsGuest()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 text-xs font-extrabold transition">
+                👤 Continuar como Invitado (Guardado Automático)
+            </button>
+
+            <div class="pt-2 border-t border-slate-800 flex items-center justify-center gap-3 text-[11px]">
+                <a href="https://wa.me/18093408435?text=Hola%20Nacho%2C%20necesito%20ayuda%20con%202DClip%20Studio" target="_blank" class="text-emerald-400 font-bold hover:underline">💬 WhatsApp Soporte</a>
+                <span class="text-slate-600">•</span>
+                <a href="https://instagram.com/nachotechrd" target="_blank" class="text-pink-400 font-bold hover:underline">📸 @nachotechrd</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="top-navbar hidden lg:flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-800/90 bg-[#090d15]/95 backdrop-blur-md px-4 py-2 z-30">
+        <!-- Brand Identity -->
+        <div class="flex items-center gap-2.5 shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-600 flex items-center justify-center shadow-lg shadow-orange-500/25 border border-white/20 font-black text-slate-950 text-sm tracking-tighter shrink-0">
+                NT
+            </div>
+            <div class="flex items-center gap-2">
+                <h1 class="font-black text-sm tracking-tight text-white flex items-center gap-1.5 whitespace-nowrap">
+                    NACHOTECH
+                    <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/30 font-mono-code whitespace-nowrap">2DCLIP PRO</span>
+                </h1>
+                <span id="total-duration-badge" class="px-2 py-0.5 rounded-full bg-slate-800 text-[10px] font-extrabold text-cyan-300 border border-slate-700 whitespace-nowrap">⏱️ 21.5s total</span>
+            </div>
+        </div>
+
+        <!-- Unified Story Template Selector -->
+        <div class="flex items-center gap-1.5 bg-[#0f1626] p-1 rounded-xl border border-slate-800/90 shrink-0">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400 pl-2 pr-1 whitespace-nowrap">Plantilla:</span>
+            <select id="header-template-select" onchange="if(this.value) loadTemplate(this.value)" class="bg-slate-900 border border-slate-700/80 hover:border-amber-500/50 rounded-lg px-2.5 py-1.5 text-xs font-extrabold text-white outline-none max-w-[230px] cursor-pointer">
+                <optgroup label="🧠 Retos & Psicología Viral">
+                    <option value="atom_brazos">🦅 Truco Brazos (Kohnstamm)</option>
+                    <option value="reto_dedo_mesa">🖐️ Reto Dedo Anular</option>
+                    <option value="reto_pie_reloj">🔄 Cortocircuito Pie & Número 6</option>
+                    <option value="reto_punto_ciego">👁️ Tu Punto Ciego Real</option>
+                    <option value="curiosidad_bostezo">🥱 Contagio del Bostezo</option>
+                    <option value="curiosidad_dejavu">🌀 El Glitch del Déjà Vu</option>
+                </optgroup>
+                <optgroup label="🧪 Ciencia & Mitos Destruidos">
+                    <option value="mito_5_segundos">🦠 Mito 5 Segundos (Bacterias)</option>
+                    <option value="mito_cerebro_10">🧠 Mito del 10% del Cerebro</option>
+                    <option value="atom_sal">🌊 Por Qué el Mar Tiene Sal</option>
+                    <option value="atom_coco">🥥 Cómo Llega el Agua al Coco</option>
+                    <option value="atom_avion">✈️ Cómo Vuela un Avión de 400T</option>
+                    <option value="atom_sueno_comer">🥱 Por Qué da Sueño al Comer</option>
+                    <option value="atom_placebo">💊 El Poder del Efecto Placebo</option>
+                    <option value="atom_tiempo_edad">⏳ Por Qué el Tiempo Vuela</option>
+                </optgroup>
+                <optgroup label="🤖 IA, Tech & Hardware">
+                    <option value="atom_como_ia">🧠 Cómo Piensa la IA en Realidad</option>
+                    <option value="atom_videos_ia">🎬 Haz Videos 2D con IA en Segundos</option>
+                    <option value="atom_internet">🌊 Cables Submarinos de Internet</option>
+                    <option value="atom_telefono">📱 Ondas Invisibles del Celular</option>
+                    <option value="nt_arroz_mito">🚨 El Mito del Arroz (Microsoldadura)</option>
+                    <option value="nt_carga_nocturna">🔌 Cargador Falso Daña el IC</option>
+                    <option value="nt_pantalla_fantasma">👻 Solución al Toque Fantasma</option>
+                    <option value="nt_desbloqueo_gsm">🔓 Desbloqueo Seguro Servidor GSM</option>
+                    <option value="historia_primer_celular">🧱 1er Celular de 1983 (DynaTAC)</option>
+                    <option value="historia_primer_computador">🖥️ ENIAC y el 1er Bug Real</option>
+                </optgroup>
+                <optgroup label="💰 Dinero, Ventas & SaaS">
+                    <option value="atom_mintieron">💍 El Engaño de los Diamantes</option>
+                    <option value="atom_ricos_dinero">💰 Flujo del Dinero y Activos</option>
+                    <option value="caso_baninter_crisis">🏦 Caso Baninter (Historia RD)</option>
+                    <option value="nakkio">🤖 Nakkio IA 24/7 (WhatsApp)</option>
+                    <option value="nakkio_embudo_3am">🌙 Ventas Automáticas a las 2 AM</option>
+                    <option value="nakkio_seguimiento">📊 Rescate de Clientes Sin Responder</option>
+                    <option value="posent">🏪 PosentRD (Caja & Facturación)</option>
+                    <option value="posent_inventario_vivo">📦 Control de Inventario en Tiempo Real</option>
+                    <option value="ntradar">📡 NTRadar + Desarrollo Web</option>
+                    <option value="nt_clonar_sistema">💻 Sistemas Web a Medida NTDESWEB</option>
+                    <option value="atom_tutorial_3pasos">🚀 Tutorial Viral en 3 Pasos</option>
+                    <option value="atom_iceberg_secreto">🧊 El Iceberg del Éxito Oculto</option>
+                </optgroup>
+            </select>
+            <button onclick="openTemplateGalleryModal()" class="px-2.5 py-1.5 rounded-lg text-[11px] font-black transition bg-indigo-600/25 hover:bg-indigo-600/45 text-indigo-300 border border-indigo-500/40 flex items-center gap-1 whitespace-nowrap">
+                <span>📚</span> Galería
+            </button>
+        </div>
+
+        <!-- Global Studio Actions (Ultra-clean: 3 primary buttons + 1 More menu) -->
+        <div class="flex items-center gap-2 shrink-0">
+            <button onclick="openGeminiModal()" class="gemini-btn-glow px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white text-xs font-black flex items-center gap-1.5 shadow-lg transition whitespace-nowrap" title="Crea un video completo con Azure GPT-5.6 + gpt-image-2 o Gemini">
+                <span>✨</span> Crear con IA
+            </button>
+            <button onclick="saveCurrentProjectToCloud()" id="btn-cloud-save" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center gap-1 shadow-md transition whitespace-nowrap" title="Guarda tu proyecto en MongoDB Atlas">
+                <span id="cloud-save-icon">☁️</span> <span id="cloud-save-text">Guardar</span>
+            </button>
+            <button onclick="openRecordFormatModal()" id="btn-record-video" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-black flex items-center gap-1.5 shadow-md transition whitespace-nowrap" title="Grabar y descargar video">
+                <span class="w-2 h-2 rounded-full bg-white animate-ping"></span> Grabar
+            </button>
+
+            <details class="relative group" id="desktop-more-menu">
+                <summary class="list-none cursor-pointer px-3 py-1.5 rounded-xl bg-slate-800/95 hover:bg-slate-700 text-slate-100 border border-slate-700 text-xs font-extrabold flex items-center gap-1.5 transition whitespace-nowrap select-none">
+                    <span>☰</span> Más <span class="text-[10px] text-slate-400">▾</span>
+                </summary>
+                <div class="absolute right-0 mt-2 w-60 rounded-2xl bg-[#0c1220] border border-slate-700/90 shadow-2xl p-1.5 z-50 space-y-1">
+                    <button onclick="this.closest('details').removeAttribute('open'); openApiKeysModal()" id="btn-api-keys-hub" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-amber-300 text-xs font-black flex items-center gap-2 transition">
+                        <span>🔑</span> Claves API (Azure / Gemini)
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openCloudProjectsModal()" id="btn-cloud-projects" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-cyan-300 text-xs font-bold flex items-center gap-2 transition">
+                        <span>📂</span> Mis Proyectos en la Nube
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openAuthModal()" id="btn-user-account" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-2 transition">
+                        <span id="user-status-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                        <span id="user-account-label">Cuenta / Sesión</span>
+                    </button>
+                    <div class="h-px bg-slate-800 my-1"></div>
+                    <button onclick="this.closest('details').removeAttribute('open'); openTemplateGeneratorModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-purple-300 text-xs font-bold flex items-center gap-2 transition">
+                        <span>🪄</span> Generar Plantilla Rápida
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openAIScriptModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-amber-200 text-xs font-bold flex items-center gap-2 transition">
+                        <span>📝</span> Fórmulas de Guion IA
+                    </button>
+                    <div class="h-px bg-slate-800 my-1"></div>
+                    <button onclick="this.closest('details').removeAttribute('open'); openIphoneRecordModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-indigo-300 text-xs font-bold flex items-center gap-2 transition">
+                        <span>📱</span> Modo Grabación iPhone
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); toggleRecordingMode()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-2 transition">
+                        <span>🎥</span> Modo Pantalla Limpia
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openTeleprompterModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-2 transition">
+                        <span>📜</span> Guion / Teleprompter
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); exportStandaloneHTML()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-cyan-300 text-xs font-bold flex items-center gap-2 transition">
+                        <span>💾</span> Descargar HTML Portable
+                    </button>
+                    <div class="h-px bg-slate-800 my-1"></div>
+                    <a href="index.html" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-300 text-xs font-bold flex items-center gap-2 transition">
+                        <span>🏠</span> Ir a la Portada
+                    </a>
+                    <button onclick="this.closest('details').removeAttribute('open'); logoutStudio()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-red-950/70 text-red-300 text-xs font-bold flex items-center gap-2 transition">
+                        <span>🔒</span> Bloquear Studio
+                    </button>
+                </div>
+            </details>
+        </div>
+    </header>
+
+    <!-- Floating HUD in Clean Recording Mode (Interactive & Functional) -->
+    <div id="recording-floating-hud" class="hidden fixed top-3 right-3 z-50 flex flex-wrap items-center gap-2 bg-black/80 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 shadow-2xl">
+        <button id="btn-hud-record-action" onclick="toggleHudRecordAction()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs flex items-center gap-1.5 shadow-lg shadow-rose-600/40 transition">
+            <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span> <span id="hud-rec-btn-text">🔴 Iniciar Grabación WebM</span>
+        </button>
+        <span id="recording-timer-hud" class="px-2.5 py-1.5 rounded-xl bg-slate-900/90 text-amber-300 font-mono-code font-bold text-xs border border-slate-700">
+            ⏱ <span id="rec-hud-time">00:00</span>
+        </span>
+        <button onclick="togglePlayPause()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+            ⏯ Pausa / Play
+        </button>
+        <button onclick="restartVideo()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+            ⏮
+        </button>
+        <button onclick="toggleRecordingMode()" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 border border-rose-500/40 text-xs font-extrabold transition">
+            ✕ Salir
+        </button>
+    </div>
+
+    <!-- PURE IPHONE RECORDING EXIT BUTTON (Subtle 20% opacity pill for iOS screen record) -->
+    <div id="iphone-pure-exit" class="hidden fixed top-4 right-4 z-50 opacity-25 hover:opacity-100 transition">
+        <button onclick="exitIphoneRecording()" class="px-3 py-1.5 rounded-full bg-black/60 text-white text-[11px] font-bold border border-white/20 backdrop-blur-sm">
+            ✕ Salir iPhone
+        </button>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    
+    <!-- NEW SLEEK COMPACT MOBILE HEADER (Visible ONLY on Mobile) -->
+    <header class="mobile-studio-header lg:hidden bg-[#070b14]/95 backdrop-blur-xl border-b border-slate-800/90 px-2.5 py-2 flex items-center justify-between gap-1.5 sticky top-0 z-40">
+        <!-- Logo + Compact Aspect Selector -->
+        <div class="flex items-center gap-1.5 shrink-0">
+            <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 flex items-center justify-center font-black text-slate-950 text-xs shadow-md">
+                ⚡
+            </div>
+            <select id="mobile-aspect-select" onchange="setStageAspectRatio(this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-1.5 py-1 text-[10px] font-black text-amber-300 outline-none">
+                <option value="9-16">📱 9:16</option>
+                <option value="1-1">⬛ 1:1</option>
+                <option value="16-9">📺 16:9</option>
+                <option value="4-5">🖼️ 4:5</option>
+            </select>
+        </div>
+
+        <!-- Clean Primary Mobile Actions -->
+        <div class="flex items-center gap-1">
+            <button onclick="openGeminiModal()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white text-[10px] font-black flex items-center gap-1 shadow whitespace-nowrap">
+                <span>✨</span> IA
+            </button>
+            <button id="mobile-toggle-view-btn" onclick="toggleMobileView()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 text-slate-200 text-[10px] font-extrabold border border-slate-700 whitespace-nowrap">
+                ⚙️ Editor
+            </button>
+            <button onclick="startCleanRecordingFlow()" class="px-2.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-[10px] font-black flex items-center gap-1 shadow-lg shadow-rose-600/30 whitespace-nowrap">
+                <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span> Grabar
+            </button>
+            <details class="relative">
+                <summary class="list-none cursor-pointer px-2 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-black select-none">☰</summary>
+                <div class="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0c1220] border border-slate-700/90 shadow-2xl p-1.5 z-50 space-y-1">
+                    <button onclick="this.closest('details').removeAttribute('open'); openApiKeysModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-amber-300 text-xs font-black flex items-center gap-2">
+                        <span>🔑</span> Claves API (IA / Voz)
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); saveCurrentProjectToCloud()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-emerald-300 text-xs font-bold flex items-center gap-2">
+                        <span>☁️</span> Guardar en Nube
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openCloudProjectsModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-cyan-300 text-xs font-bold flex items-center gap-2">
+                        <span>📂</span> Mis Proyectos
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openAuthModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-2">
+                        <span>👤</span> Mi Cuenta
+                    </button>
+                    <div class="h-px bg-slate-800 my-1"></div>
+                    <button onclick="this.closest('details').removeAttribute('open'); openTemplateGeneratorModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-purple-300 text-xs font-bold flex items-center gap-2">
+                        <span>🪄</span> Plantilla Rápida
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); openTeleprompterModal()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-2">
+                        <span>📜</span> Teleprompter
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); toggleRecordingMode()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center gap-2">
+                        <span>🎥</span> Modo Pantalla Limpia
+                    </button>
+                    <button onclick="this.closest('details').removeAttribute('open'); logoutStudio()" class="w-full text-left px-3 py-2 rounded-xl hover:bg-red-950/70 text-red-300 text-xs font-bold flex items-center gap-2">
+                        <span>🔒</span> Cerrar Sesión
+                    </button>
+                </div>
+            </details>
+        </div>
+    </header>
+
+    <!-- MOBILE UNIFIED TEMPLATE SELECTOR BAR (Friendly 1-line selector instead of 36 tiny buttons) -->
+    <div id="mobile-templates-bar" class="lg:hidden bg-[#090d18] border-b border-slate-800/80 px-2.5 py-1.5 flex items-center gap-2 z-30">
+        <select id="mobile-template-select" onchange="if(this.value) loadTemplate(this.value)" class="flex-1 min-w-0 bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-white outline-none">
+            <option value="atom_brazos">🦅 Truco Brazos (Kohnstamm)</option>
+        </select>
+        <button onclick="openTemplateGalleryModal()" class="px-3 py-1.5 rounded-xl text-[11px] font-black bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 flex items-center gap-1 shrink-0 whitespace-nowrap">
+            <span>📚</span> Galería
+        </button>
+    </div>
+
+    <!-- PURE RECORDING EXIT BUTTON (Discreet corner pill outside video frame) -->
+    <div id="pure-exit-pill" class="hidden fixed top-3 right-3 z-[100000] opacity-30 hover:opacity-100 transition">
+        <button onclick="exitCleanRecording()" class="px-3 py-1.5 rounded-full bg-black/80 text-white text-xs font-bold border border-white/20 backdrop-blur-md shadow-xl">
+            ✕ Salir Grabación
+        </button>
+    </div>
+
+    <!-- PURE RECORDING COMPLETION CARD (Shows when all 5 scenes finish) -->
+    <div id="recording-complete-card" class="hidden fixed inset-0 z-[100001] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0b101c] border-2 border-emerald-500/60 rounded-3xl p-6 text-center max-w-sm w-full space-y-4 shadow-2xl">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 text-2xl mx-auto flex items-center justify-center">
+                🎉
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-base font-black text-white">¡Video Completado!</h3>
+                <p class="text-xs text-slate-300">Detén tu grabación de pantalla en el iPhone o PC ahora.</p>
+            </div>
+            <div class="flex items-center gap-2 pt-2">
+                <button onclick="repeatCleanRecording()" class="flex-1 py-2.5 rounded-xl bg-slate-800 text-slate-200 text-xs font-bold hover:bg-slate-700 transition">
+                    🔁 Grabar de Nuevo
+                </button>
+                <button onclick="exitCleanRecording()" class="flex-1 py-2.5 rounded-xl bg-emerald-500 text-slate-950 text-xs font-black hover:bg-emerald-400 shadow-lg transition">
+                    ✓ Salir al Editor
+                </button>
+            </div>
+        </div>
+    </div>
+
+        <main class="main-workspace flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 p-4 sm:p-5 max-w-[1680px] w-full mx-auto items-center">
+
+        <!-- LEFT COLUMN: 9:16 VERTICAL CANVAS -->
+        <div class="stage-column lg:col-span-5 xl:col-span-5 flex flex-col items-center justify-center">
+            <!-- FORMAT & ASPECT RATIO SELECTOR BAR -->
+            <div class="format-selector-bar hidden lg:flex items-center justify-between gap-1 bg-[#0b101c] p-1.5 rounded-2xl border border-slate-800/90 mb-3 w-full max-w-[480px] shadow-lg">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 pl-2 pr-1">Formato:</span>
+                <div class="flex items-center gap-1 flex-1 justify-end">
+                    <button onclick="setStageAspectRatio('9-16')" id="btn-aspect-9-16" class="aspect-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold transition bg-amber-500 text-slate-950 shadow-md">
+                        📱 9:16 (TikTok/Reels)
+                    </button>
+                    <button onclick="setStageAspectRatio('1-1')" id="btn-aspect-1-1" class="aspect-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold transition text-slate-300 hover:bg-slate-800">
+                        ⬛ 1:1 (Post)
+                    </button>
+                    <button onclick="setStageAspectRatio('16-9')" id="btn-aspect-16-9" class="aspect-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold transition text-slate-300 hover:bg-slate-800">
+                        📺 16:9 (YouTube)
+                    </button>
+                    <button onclick="setStageAspectRatio('4-5')" id="btn-aspect-4-5" class="aspect-btn px-2.5 py-1 rounded-xl text-[11px] font-extrabold transition text-slate-300 hover:bg-slate-800">
+                        🖼️ 4:5
+                    </button>
+                </div>
+            </div>
+
+            
+            <div id="video-stage" class="stage-wrapper aspect-9-16 hl-box w-full flex flex-col justify-between p-4 sm:p-5 relative cursor-pointer" onclick="togglePlayPause()">
+                
+                <!-- LAYER 1: DYNAMIC CAMERA RIG + SCENARIO BACKGROUND -->
+                <div id="camera-rig" class="scene-camera-layer">
+                    <!-- Dynamic SVG Scenario -->
+                    <div id="environment-backdrop-layer" class="absolute inset-0 w-full h-full"></div>
+                    <!-- Custom Image Layer -->
+                    <img id="custom-bg-image-layer" src="" alt="" class="hidden absolute inset-0 w-full h-full object-cover opacity-85" />
+                    <!-- Sunburst Effect -->
+                    <div class="sunburst"></div>
+                    <!-- Vignette Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-black/85 pointer-events-none"></div>
+                    <!-- Ambient Glow Orbs -->
+                    <div id="ambient-orbs-layer" class="absolute inset-0 pointer-events-none"></div>
+                    <!-- Center Vector Actor / Dynamic Illustration -->
+                    <div id="vector-graphic-stage" class="absolute inset-0 flex items-center justify-center w-full h-full pt-14 pb-12"></div>
+                </div>
+
+                <!-- Floating Particles Layer -->
+                <div id="particles-layer" class="absolute inset-0 pointer-events-none overflow-hidden z-10"></div>
+
+                <!-- FLOATING REACTION EMOJI BADGE -->
+                <div id="stage-reaction-emoji" class="hidden"></div>
+
+            <!-- LAYER: DUAL IMAGE OVERLAY & PROPS (SELLO ROJO & REJAS DE CÁRCEL) -->
+            <div id="stage-props-layer" class="absolute inset-0 pointer-events-none overflow-hidden z-15">
+                <div id="stage-jail-bars" class="hidden jail-bars-overlay"></div>
+                <div id="stage-dual-overlay" class="overlay-dual-stage"></div>
+                <div id="stage-rubber-stamp" class="hidden rubber-stamp-slam select-none" onpointerdown="startStagePropDrag(event, 'stamp')" onclick="event.stopPropagation()"></div>
+            </div>
+            <!-- STAGE BEAT FLASH OVERLAY -->
+            <div id="stage-beat-flash" class="absolute inset-0 pointer-events-none opacity-0 z-25" style="background: radial-gradient(circle at center, rgba(255,255,255,0.85) 0%, rgba(56,189,248,0.35) 45%, transparent 75%);"></div>
+
+                <!-- LAYER 2: TOP PROGRESS + GIANT HOOK HEADLINE -->
+                <div class="relative z-20 space-y-2">
+                    <div id="scene-progress-bars" class="flex gap-1.5 w-full"></div>
+                    <div class="flex items-center justify-between px-0.5">
+                        <span id="stage-top-domain" class="px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 backdrop-blur-md text-[10px] font-extrabold text-amber-300 font-mono-code tracking-tight">
+                            🌐 nachotechrd
+                        </span>
+                        <span id="stage-top-tag" class="px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-md text-[10px] font-black uppercase tracking-wider text-white">
+                            @nachotechrd
+                        </span>
+                    </div>
+
+                    <!-- Proyecto Atom Giant Top 2-Tone Headline -->
+                    <div id="hook-banner-container" class="pt-0.5 text-center"></div>
+
+                    <!-- SOCIAL SAFE ZONE: UPPER DYNAMIC SUBTITLES (1-2 LINES MAX) -->
+                    <div id="subtitle-card-wrapper" class="pt-1 flex justify-center">
+                        <div class="bg-black/80 backdrop-blur-md border border-white/20 rounded-2xl px-3.5 py-1.5 text-center shadow-2xl max-w-full">
+                            <div id="subtitle-container" class="text-[17px] sm:text-[20px] font-black leading-[1.24] tracking-tight select-none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 3: BOTTOM SAFE ZONE (RIBBON + WATERMARK) -->
+                <div class="relative z-20 mt-auto space-y-2 pb-0.5">
+                    <!-- Action Ribbon + Corner Badge -->
+                    <div class="flex items-center justify-between gap-2 min-h-[36px]">
+                        <div id="bottom-ribbon-container" class="flex-1"></div>
+                        <div id="corner-timer-badge"></div>
+                    </div>
+
+                    <!-- Watermark & Counter -->
+                    <div class="flex items-center justify-between text-[11px] font-extrabold text-white/80 pt-1.5 border-t border-white/15">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span id="brand-watermark" class="tracking-wide">@nachotechrd</span>
+                        </div>
+                        <span id="scene-counter-badge" class="px-2 py-0.5 rounded-md bg-black/55 text-white/95 font-mono-code text-[10px]">Escena 1/5</span>
+                    </div>
+                </div>
+
+                <!-- Countdown 3-2-1 Overlay for Recording Mode -->
+                <div id="countdown-overlay" class="hidden absolute inset-0 z-50 bg-black/90 flex flex-col items-center justify-center gap-3">
+                    <div id="countdown-number" class="text-7xl font-black text-amber-400 animate-ping">3</div>
+                    <span class="text-sm font-bold text-slate-300 uppercase tracking-widest">Preparando Grabación...</span>
+                </div>
+            </div>
+
+            <!-- Playback Controls Bar -->
+            <div class="stage-controls-bar mt-3.5 flex flex-wrap items-center justify-center gap-2 bg-[#0e1422] px-4 py-2 rounded-2xl border border-slate-800/90 shadow-2xl">
+                <button onclick="restartVideo()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition" title="Reiniciar">
+                    ⏮ Reiniciar
+                </button>
+                <button onclick="prevSceneManual()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition">
+                    ◀
+                </button>
+                <button id="play-pause-btn" onclick="togglePlayPause()" class="px-4 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-xs font-black text-slate-950 transition flex items-center gap-1.5 shadow-md shadow-amber-500/25">
+                    ⏸ Pausar
+                </button>
+                <button onclick="nextSceneManual()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition" title="Escena Siguiente">
+                    ▶
+                </button>
+                <button id="loop-mode-btn" onclick="toggleLoopMode()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Alternar entre repetir todo el video o bucle de la escena actual en edición">
+                    🔂 Bucle: Solo Escena
+                </button>
+                <div class="h-4 w-[1px] bg-slate-700 mx-0.5"></div>
+                <span id="playback-time-badge" class="px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono-code font-bold text-amber-300">00.0s / 21.5s</span>
+                <div class="h-4 w-[1px] bg-slate-700 mx-0.5"></div>
+                <button id="sfx-toggle-btn" onclick="toggleSFX()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition">
+                    🔊 SFX: ON
+                </button>
+                <button id="bgm-toggle-btn" onclick="toggleBGM()" class="px-2.5 py-1.5 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold transition" title="Música ambiental sintetizada de fondo">
+                    🎵 BGM: OFF
+                </button>
+                <button id="tts-toggle-btn" onclick="toggleTTS()" class="px-2.5 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold transition">
+                    🗣️ Voz IA: ON
+                </button>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: PRO STORY EDITOR -->
+        <div class="editor-sidebar lg:col-span-7 xl:col-span-7 bg-[#0d121e] border border-slate-800/90 rounded-3xl p-4 sm:p-6 flex flex-col h-[min(86vh,805px)] shadow-2xl">
+            
+            <!-- Editor Top Header & Mode Tabs -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-slate-800">
+                <div>
+                    <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                        <span>🎬</span> Director de Historias Multicapa // @nachotechrd
+                        <span id="autosave-indicator" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">✓ Guardado auto</span>
+                    </h2>
+                    <p class="text-xs text-slate-400">Guion, ilustraciones en tiempo real, efectos sonoros y llamadas a la acción virales.</p>
+                </div>
+
+                <div class="flex bg-[#070a12] p-1 rounded-xl border border-slate-800">
+                    <button onclick="switchRightTab('scenes')" id="tab-btn-scenes" class="px-3 py-1.5 rounded-lg text-xs font-extrabold bg-amber-500 text-slate-950 transition">
+                        🎞️ Escenas (<span id="total-scenes-count">5</span>)
+                    </button>
+                    <button onclick="switchRightTab('assistant')" id="tab-btn-assistant" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-slate-400 hover:text-white transition">
+                        ✨ Asistente IA
+                    </button>
+                    <button onclick="switchRightTab('audio')" id="tab-btn-audio" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-slate-400 hover:text-white transition">
+                        🎙️ Audio & BGM
+                    </button>
+                    <button onclick="switchRightTab('prompt')" id="tab-btn-prompt" class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-slate-400 hover:text-white transition">
+                        📦 JSON & Prompts
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: SCENES EDITOR -->
+            <div id="tab-content-scenes" class="flex-1 overflow-y-auto pr-1.5 mt-3.5 space-y-3.5">
+                
+                <!-- Global Brand Config Bar -->
+                <div class="bg-[#080c15] border border-slate-800/90 rounded-2xl p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Creador / Handle</label>
+                        <input id="input-brand-name" type="text" value="@nachotechrd" oninput="updateGlobalBrand()" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs font-extrabold text-white focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Web / Proyecto</label>
+                        <input id="input-domain-name" type="text" value="nachotechrd" oninput="updateGlobalBrand()" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs font-extrabold text-amber-400 font-mono-code focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Insignia Final / Sello</label>
+                        <input id="input-price-tag" type="text" value="SÍGUEME HOY" oninput="updateGlobalBrand()" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs font-extrabold text-emerald-400 focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Estilo de Subtítulos</label>
+                        <select id="input-highlight-style" onchange="updateHighlightStyle(this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-white focus:outline-none focus:border-amber-400">
+                            <option value="hl-pill">🟨 Amarillo Impacto (Atom)</option>
+                            <option value="hl-tiktok-green">🟩 TikTok Green Pop (Reel)</option>
+                            <option value="hl-mrbeast">🦁 MrBeast Explosivo</option>
+                            <option value="hl-box">🟦 Caja Vectorial Hormozi</option>
+                            <option value="hl-clean-white">🤍 Píldora Blanca Minimal</option>
+                            <option value="hl-red-alert">🚨 Alerta Roja / Peligro</option>
+                            <option value="hl-purple-neon">💜 Púrpura Cyber Neón</option>
+                            <option value="hl-underline">🟥 Subrayado Fuego Vivo</option>
+                            <option value="hl-glow">✨ Resplandor Neón Cian</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Scene Timeline Strip -->
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-[#090e18] p-2.5 rounded-2xl border border-slate-800/80">
+                    <div id="scene-tabs-strip" class="flex flex-wrap items-center gap-1.5"></div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="moveScene(-1)" title="Mover escena antes" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">◀</button>
+                        <button onclick="moveScene(1)" title="Mover escena después" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">▶</button>
+                        <button onclick="duplicateCurrentScene()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-xs font-bold transition">
+                            ⧉ Duplicar
+                        </button>
+                        <button onclick="addNewScene()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 text-xs font-extrabold transition">
+                            + Escena
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Scene Deep Editor (Injected dynamically) -->
+                <div id="active-scene-editor" class="bg-[#080c15] border border-slate-800/90 rounded-2xl p-4 space-y-3"></div>
+
+                <!-- Global CTA Field -->
+                <div class="bg-[#080c15] border border-slate-800/90 rounded-2xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="text-xs">
+                        <span class="font-extrabold text-white">🎯 Botón de Conversión Final (Escena CTA):</span>
+                        <p class="text-[11px] text-slate-400">Texto principal que empuja al usuario a comentar o visitar tu enlace.</p>
+                    </div>
+                    <input id="input-cta-text" type="text" value="SÍGUEME @NACHOTECH" oninput="updateGlobalBrand()" class="w-full sm:w-64 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-black text-amber-400 uppercase tracking-wide focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <!-- TAB 2: GUIDED SCRIPT ASSISTANT (WIZARD) -->
+            <div id="tab-content-assistant" class="hidden flex-1 overflow-y-auto pr-1.5 mt-3.5 space-y-3.5">
+                <div class="bg-[#080c15] border border-slate-800 rounded-2xl p-4 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-black text-white flex items-center gap-2">
+                                <span>✨</span> Constructor de Historias Guiadas en 1 Clic
+                            </h3>
+                            <p class="text-xs text-slate-400">Crea guiones magnéticos estructurados bajo fórmulas virales comprobadas.</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-extrabold font-mono-code">FÓRMULAS PRO</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">1. Fórmula Narrativa</label>
+                            <select id="wiz-formula-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-extrabold text-amber-300">
+                                <option value="reto_atom">🦅 Reto Físico / Curiosidad (Estilo Proyecto Atom)</option>
+                                <option value="desmitificando">💍 Desmitificando ("Te Dijeron X, pero es Y")</option>
+                                <option value="problema_solucion">🏪 Problema a Solución (Negocio / Clientes / Ventas)</option>
+                                <option value="tutorial_3pasos">🚀 Tutorial Rápido en 3 Pasos</option>
+                                <option value="iceberg_secreto">🧊 El Secreto Oculto (El Efecto Iceberg)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">2. Marca o Proyecto a Impulsar</label>
+                            <select id="wiz-brand-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-extrabold text-cyan-300">
+                                <option value="nachotechrd">@nachotechrd (Marca Personal & IA)</option>
+                                <option value="nakkio">nakkio.com (WhatsApp IA 24/7)</option>
+                                <option value="posent">posentrd.com (Punto de Venta & Caja)</option>
+                                <option value="ntradar">ntradar.com (Monitoreo & Inteligencia)</option>
+                                <option value="ntdesweb">ntdesweb.dev (Software & Web Apps)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">3. ¿De qué trata el video? (Idea, Pregunta o Problema)</label>
+                        <input id="wiz-topic-input" type="text" placeholder="Ej: Por qué no puedes abrir los ojos al estornudar / Cómo no perder ventas a las 11 PM" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">4. Frase del Gancho Inicial (Opcional)</label>
+                            <input id="wiz-hook-input" type="text" placeholder="Ej: TU CEREBRO TE ENGAÑA / MIRA LO QUE PASA" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-yellow-300 focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">5. Llamado a la Acción (CTA)</label>
+                            <input id="wiz-cta-input" type="text" placeholder="Ej: PRUÉBALO HOY / ENTRA AL LINK" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-emerald-300 focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                        <button onclick="applyWizardStory()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 text-slate-950 text-xs font-black shadow-lg shadow-orange-500/25 transition hover:scale-105">
+                            ⚡ Armar Historia Completa en el Canvas
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: AUDIO, BGM & SOUND STUDIO -->
+            <div id="tab-content-audio" class="hidden flex-1 overflow-y-auto pr-1.5 mt-3.5 space-y-4">
+<!-- PANEL PRO ELEVENLABS API (DIRECTO EN WEB + CACHÉ ANTI-GASTO DE CRÉDITOS) -->
+        <div class="bg-gradient-to-br from-[#0c1222] to-[#080c15] border-2 border-amber-500/40 rounded-2xl p-4 space-y-3.5 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm font-black text-white flex items-center gap-2">
+                    <span>⚡</span> Motor ElevenLabs Ultra-Realista (Sincronización Exacta)
+                </h3>
+                <span id="eleven-status-badge" class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono-code">
+                    🔒 Ingresa tu API Key
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                <div class="sm:col-span-7">
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-300 mb-1">1. Tu API Key de ElevenLabs (xi-api-key):</label>
+                    <div class="flex gap-1.5">
+                        <input id="eleven-api-key-input" type="password" placeholder="sk_... o pega tu API Key aquí" oninput="saveElevenConfig()" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code font-bold text-amber-300 focus:outline-none focus:border-amber-400">
+                        <button onclick="fetchElevenLabsVoices()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-extrabold transition" title="Cargar todas las voces de tu cuenta de ElevenLabs">
+                            🔄 Cargar Voces
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-5">
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-300 mb-1">2. Voz de ElevenLabs:</label>
+                    <select id="eleven-voice-select" onchange="saveElevenConfig()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-extrabold text-white focus:outline-none focus:border-amber-400">
+                        <option value="pNInz6obpgDQGcFmaJgB">🎙️ Adam (Narrador Viral / Documental)</option>
+                        <option value="ErXwobaYiN019PkySvjV">⚡ Antoni (Dinámico / Reels & TikTok)</option>
+                        <option value="VR6AewLTigWG4xSOukaG">🔥 Arnold (Voz Potente / Autoridad)</option>
+                        <option value="EXAVITQu4vr4xnSDxMaL">✨ Bella (Femenina Clara / Storytelling)</option>
+                        <option value="21m00Tcm4TlvDq8ikWAM">💼 Rachel (Femenina Corporativa)</option>
+                        <option value="TxGEqnHWrfWFTfGW9XjX">🚀 Josh (Joven / Tech & Curiosidades)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sliders de Estabilidad y Expresividad -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                <div class="bg-slate-950/90 p-2.5 rounded-xl border border-slate-800">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-300 mb-1">
+                        <span>Estabilidad (Emoción):</span>
+                        <span id="el-stab-val" class="text-amber-400 font-mono-code">0.45</span>
+                    </div>
+                    <input id="eleven-stability" type="range" min="0.15" max="0.95" step="0.05" value="0.45" oninput="document.getElementById('el-stab-val').textContent=this.value; saveElevenConfig()" class="w-full accent-amber-500 cursor-pointer">
+                </div>
+                <div class="bg-slate-950/90 p-2.5 rounded-xl border border-slate-800">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-300 mb-1">
+                        <span>Claridad / Similitud:</span>
+                        <span id="el-sim-val" class="text-cyan-400 font-mono-code">0.80</span>
+                    </div>
+                    <input id="eleven-similarity" type="range" min="0.30" max="1.00" step="0.05" value="0.80" oninput="document.getElementById('el-sim-val').textContent=this.value; saveElevenConfig()" class="w-full accent-cyan-500 cursor-pointer">
+                </div>
+                <div class="bg-slate-950/90 p-2.5 rounded-xl border border-slate-800">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-300 mb-1">
+                        <span>Exageración Viral:</span>
+                        <span id="el-style-val" class="text-rose-400 font-mono-code">0.35</span>
+                    </div>
+                    <input id="eleven-style" type="range" min="0.00" max="0.85" step="0.05" value="0.35" oninput="document.getElementById('el-style-val').textContent=this.value; saveElevenConfig()" class="w-full accent-rose-500 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Botones de Generación con Caché -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/90">
+                <div class="text-[11px] text-slate-400">
+                    💡 Genera el audio <strong>1 sola vez</strong> y quedará guardado en cada escena sin gastar créditos en el bucle.
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="generateElevenCurrentScene()" id="btn-eleven-scene" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 text-xs font-extrabold transition">
+                        🎙️ Generar Escena Actual
+                    </button>
+                    <button onclick="generateElevenAllScenes()" id="btn-eleven-all" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 text-xs font-black shadow-lg shadow-orange-500/30 transition transform hover:scale-[1.02]">
+                        ⚡ Generar Todo el Video (5 Escenas)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL VOCES NEURALES DE AZURE AI SPEECH -->
+        <div class="bg-gradient-to-br from-[#081326] to-[#080c15] border-2 border-sky-500/40 rounded-2xl p-4 space-y-3 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm font-black text-white flex items-center gap-2">
+                    <span>🔷</span> Voces Neurales de Azure AI (HD)
+                </h3>
+                <span id="azure-tts-status-badge" class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 font-mono-code">
+                    ☁️ Voces Neurales Azure
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-8">
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-300 mb-1">Voz Neural de Azure (Español Latino / Caribe / España / USA):</label>
+                    <select id="azure-voice-select" onchange="saveAzureVoicePreference()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-extrabold text-sky-200 focus:outline-none focus:border-sky-400">
+                        <option value="es-DO-EmilioNeural">🇩🇴 Emilio (Rep. Dominicana - Masculina Pro)</option>
+                        <option value="es-DO-RamonaNeural">🇩🇴 Ramona (Rep. Dominicana - Femenina Clara)</option>
+                        <option value="es-MX-JorgeNeural">🇲🇽 Jorge (México - Narrador Viral)</option>
+                        <option value="es-MX-DaliaNeural">🇲🇽 Dalia (México - Dinámica)</option>
+                        <option value="es-CO-GonzaloNeural">🇨🇴 Gonzalo (Colombia - Documental)</option>
+                        <option value="es-CO-SalomeNeural">🇨🇴 Salomé (Colombia - Cálida)</option>
+                        <option value="es-US-AlonsoNeural">🇺🇸 Alonso (Español Neutro USA)</option>
+                        <option value="es-US-PalomaNeural">🇺🇸 Paloma (Español Neutro USA)</option>
+                        <option value="es-ES-AlvaroNeural">🇪🇸 Álvaro (España - Documental)</option>
+                        <option value="es-ES-ElviraNeural">🇪🇸 Elvira (España - Comercial)</option>
+                        <option value="es-AR-TomasNeural">🇦🇷 Tomás (Argentina)</option>
+                        <option value="es-AR-ElenaNeural">🇦🇷 Elena (Argentina)</option>
+                        <option value="en-US-AndrewMultilingualNeural">🌎 Andrew Multilingual (EN/ES)</option>
+                        <option value="en-US-AvaMultilingualNeural">🌎 Ava Multilingual (EN/ES)</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-4 flex gap-1.5">
+                    <button type="button" onclick="testAzureSpeechVoice()" class="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-500/40 text-xs font-extrabold transition">
+                        🔊 Probar Azure
+                    </button>
+                    <button type="button" onclick="openApiKeysModal()" class="py-2 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold" title="Configurar Región / Key de Azure Speech">
+                        🔑
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/90">
+                <div class="text-[11px] text-slate-400">
+                    Usa las voces neurales oficiales de Azure con velocidad/tono del editor y guardado directo en Cloudinary.
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="generateAzureCurrentScene()" id="btn-azure-tts-scene" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-500/40 text-xs font-extrabold transition">
+                        🔷 Narrar Escena Actual
+                    </button>
+                    <button type="button" onclick="generateAzureAllScenes()" id="btn-azure-tts-all" class="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 text-xs font-black shadow-lg shadow-sky-500/30 transition">
+                        ⚡ Narrar Todo el Video (Azure)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+                <div class="bg-[#080c15] border border-slate-800 rounded-2xl p-4 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-black text-white flex items-center gap-2">
+                            <span>🎙️</span> Voces 100% Gratis del Navegador (Sin Claves API)
+                        </h3>
+                        <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            ✓ 100% Gratis y Funcional
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-slate-400">
+                        Tu video suena automáticamente con las mejores voces naturales de tu dispositivo (Microsoft Natural, Google o Apple). <strong>No necesitas ninguna clave API ni suscripciones de pago.</strong>
+                    </p>
+
+                    <!-- Voice Selector & Instant Test -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">
+                                Selecciona la Voz Gratuita en Español:
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <select id="voice-select-dropdown" onchange="updateVoiceSelection()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-extrabold text-amber-300 focus:outline-none focus:border-amber-400">
+                                    <option value="">Detectando las mejores voces en español...</option>
+                                </select>
+                                <button onclick="testFreeVoiceNow()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black shadow-lg shadow-emerald-600/30 flex items-center gap-1.5 transition whitespace-nowrap">
+                                    <span>🔊</span> Probar Voz
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Sliders: Rate & Pitch -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-300 mb-1">
+                                    <span>Velocidad de Lectura:</span>
+                                    <span id="tts-rate-label" class="text-amber-400 font-mono-code font-bold">1.10x</span>
+                                </div>
+                                <input id="tts-rate-slider" type="range" min="0.85" max="1.45" step="0.03" value="1.10" oninput="updateTTSParams()" class="w-full accent-amber-500 cursor-pointer">
+                                <div class="flex justify-between text-[9px] text-slate-500 mt-0.5">
+                                    <span>Pausado (0.85x)</span>
+                                    <span>Reel Viral (1.10x)</span>
+                                    <span>Rápido (1.45x)</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-300 mb-1">
+                                    <span>Tono de Voz (Grave / Agudo):</span>
+                                    <span id="tts-pitch-label" class="text-cyan-400 font-mono-code font-bold">1.00x</span>
+                                </div>
+                                <input id="tts-pitch-slider" type="range" min="0.75" max="1.35" step="0.05" value="1.00" oninput="updateTTSPitch()" class="w-full accent-cyan-500 cursor-pointer">
+                                <div class="flex justify-between text-[9px] text-slate-500 mt-0.5">
+                                    <span>Grave (0.75x)</span>
+                                    <span>Natural (1.00x)</span>
+                                    <span>Agudo (1.35x)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Presets -->
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase text-slate-400 block mb-1.5">Presets Rápidos de Ritmo:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="applyVoicePreset(1.15, 1.05)" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 text-[11px] font-extrabold border border-slate-700 transition">
+                                    ⚡ TikTok Enérgico (1.15x)
+                                </button>
+                                <button onclick="applyVoicePreset(0.96, 0.90)" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-300 text-[11px] font-extrabold border border-slate-700 transition">
+                                    🎙️ Narrador Profundo (0.96x)
+                                </button>
+                                <button onclick="applyVoicePreset(1.10, 1.00)" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-300 text-[11px] font-extrabold border border-slate-700 transition">
+                                    ⚖️ Equilibrado Estándar (1.10x)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CapCut Friendly Notice -->
+                        <div class="bg-blue-950/40 border border-blue-500/30 rounded-xl p-3 flex items-start gap-2.5 text-xs text-blue-200">
+                            <span class="text-base">🎬</span>
+                            <div class="space-y-0.5">
+                                <span class="font-black text-white">¿Quieres editar o cambiar la voz en CapCut?</span>
+                                <p class="text-[11px] text-blue-300/90 leading-relaxed">
+                                    Tu video grabado ya lleva esta voz gratis sincronizada con los subtítulos. Si luego quieres reemplazarla con una voz clonada o efectos de CapCut, solo abres tu video en CapCut, silencias el audio original y le pones la voz que quieras manteniendo los mismos subtítulos.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] text-slate-400 border-t border-slate-800 pt-2">
+                            💡 También puedes <strong>grabar con tu micrófono</strong> o <strong>subir audios .mp3</strong> en cada escena individual.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Background Music Synth (BGM) -->
+                <div class="pt-3 border-t border-slate-800/80">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-xs font-black uppercase text-purple-400 flex items-center gap-1.5">
+                                🎵 Colchón Musical Ambiental (BGM Pro con Ducking Automático)
+                            </h4>
+                            <span id="bgm-status-text" class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">Desactivado</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-3">Música multicapa sintetizada con filtro cálido y reducción automática de volumen cuando entra la voz:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                            <select id="bgm-track-select" onchange="changeBGMTrack(this.value)" class="px-2.5 py-2 rounded-xl bg-slate-900 text-xs font-bold text-purple-200 border border-purple-500/40 focus:outline-none">
+                                <option value="downtempo">🎹 Chill Lo-Fi Documental</option>
+                                <option value="tech_pulse">⚡ Pulso Tech / IA Futurista</option>
+                                <option value="suspense_doc">🕵️ Tensión / Caso Viral</option>
+                                <option value="upbeat_viral">🚀 Ritmo Dinámico Reels</option>
+                            </select>
+                            <button onclick="toggleBGM(true)" class="px-3 py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 text-xs font-bold text-purple-200 border border-purple-500/40">
+                                ▶ Reproducir BGM
+                            </button>
+                            <button onclick="toggleBGM(false)" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700">
+                                ⏹ Detener BGM
+                            </button>
+                            <div class="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+                                <span class="text-[10px] font-bold text-slate-400">Vol:</span>
+                                <input id="bgm-volume-slider" type="range" min="0.02" max="0.45" step="0.01" value="0.14" oninput="updateBGMVolume(this.value)" class="w-full accent-purple-400 cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SFX Soundbank -->
+                    <div class="pt-3 border-t border-slate-800/80">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-xs font-extrabold uppercase text-cyan-400">🎹 Banco Rápido de Efectos Sonoros (SFX + MP3 Reales)</h4>
+                            <span class="text-[10px] font-bold text-slate-400">Sincronizados al bus de grabación</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="playCustomOrSynthSFX('whoosh')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700">🌪️ Whoosh Pro</button>
+                            <button onclick="playCustomOrSynthSFX('pop')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700">🫧 Pop</button>
+                            <button onclick="playCustomOrSynthSFX('cash')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-amber-300 border border-slate-700">💰 Cash</button>
+                            <button onclick="playCustomOrSynthSFX('radar')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-emerald-300 border border-slate-700">📡 Radar</button>
+                            <button onclick="playCustomOrSynthSFX('cyber')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-cyan-300 border border-slate-700">⚡ Cyber</button>
+                            <button onclick="playCustomOrSynthSFX('ding')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-rose-300 border border-slate-700">🔔 Ding</button>
+                            <button onclick="playCustomOrSynthSFX('impact')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-orange-400 border border-slate-700">💥 Impacto Bass</button>
+                            <button onclick="playCustomOrSynthSFX('FXS/vine boom.mp3')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-amber-200 border border-amber-500/30">🔊 Vine Boom</button>
+                            <button onclick="playCustomOrSynthSFX('FXS/cash.mp3')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-emerald-200 border border-emerald-500/30">💵 Cash MP3</button>
+                            <button onclick="playCustomOrSynthSFX('FXS/glitch.mp3')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-purple-200 border border-purple-500/30">⚡ Glitch MP3</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: JSON BACKUP & MASTER PROMPT -->
+            <div id="tab-content-prompt" class="hidden flex-1 overflow-y-auto pr-1.5 mt-3.5 space-y-4">
+                <div class="bg-[#080c15] border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-xs font-black uppercase tracking-wider text-cyan-400">📦 Guardar o Cargar Proyecto (.JSON)</h3>
+                        <p class="text-xs text-slate-400">Exporta tu guion completo para editarlo después o compártelo.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportProjectJSON()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700">
+                            ⬇ Exportar .JSON
+                        </button>
+                        <label class="px-3 py-1.5 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 text-xs font-bold cursor-pointer">
+                            ⬆ Importar .JSON
+                            <input type="file" accept=".json" onchange="importProjectJSON(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-[#080c15] border border-slate-800 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400">🚀 Prompt Maestro de Guiones Virales 9:16</span>
+                        <button onclick="copyMasterPrompt()" id="copy-prompt-btn" class="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-extrabold transition">
+                            📋 Copiar Prompt
+                        </button>
+                    </div>
+                    <pre id="master-prompt-box" class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-[11px] text-slate-300 font-mono-code whitespace-pre-wrap leading-relaxed select-all overflow-x-auto">Actúa como el Director Creativo de Motion Graphics 2D de @nachotechrd.
+Genera un guion viral de alta retención en formato 9:16 para Reels y TikTok:
+ESTRUCTURA DE 5 ESCENAS (20-22 SEGUNDOS TOTAL):
+- Escena 1 (Gancho Psicológico): Frase contraintuitiva de máximo 10 palabras + Titular gigante de 2 tonos.
+- Escena 2 (Demostración de Causa): Ilustración en vivo del problema o reto con cámara dinámica.
+- Escena 3 (El Mecanismo / La Solución): Explicación visual paso a paso (IA, software o principio físico).
+- Escena 4 (3 Dolores Eliminados): 3 objeciones tachadas con X roja en vivo o comparación Antes vs Ahora.
+- Escena 5 (Llamado a la Acción): Botón de conversión pulsante + insignia de garantía @nachotechrd.</pre>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+    <!-- MODAL TELEPROMPTER / GUION COMPLETO -->
+    <div id="teleprompter-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-slate-700 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-black text-white flex items-center gap-2">
+                    <span>📜</span> Guion Completo / Modo Teleprompter
+                </h3>
+                <button onclick="closeTeleprompterModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+            <p class="text-xs text-slate-300">
+                Lee este guion si prefieres grabarte con tu propia voz frente a cámara, o cópialo para tu equipo:
+            </p>
+            <div id="teleprompter-text-container" class="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-slate-200 text-sm font-bold leading-relaxed max-h-72 overflow-y-auto space-y-3"></div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                <span id="teleprompter-word-count" class="text-xs font-bold text-amber-400">Total: 0 palabras • ~0s lectura</span>
+                <div class="flex items-center gap-2">
+                    <button onclick="copyTeleprompterText()" id="btn-copy-teleprompter" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+                        📋 Copiar Texto
+                    </button>
+                    <button onclick="closeTeleprompterModal()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition">
+                        Listo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL SELECCIONAR TAMAÑO ANTES DE GRABAR -->
+    <div id="record-format-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-black text-white flex items-center gap-2">
+                    <span>🔴</span> Elige el Tamaño para tu Video
+                </h3>
+                <button onclick="closeRecordFormatModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+            <p class="text-xs text-slate-300">
+                Selecciona la red social donde vas a publicar para ajustar automáticamente la pantalla:
+            </p>
+            <!-- OPCIÓN MAESTRA: GRABACIÓN AUTOMÁTICA DIRECTA EN MP4 (ESPECIAL IPHONE Y MÓVIL) -->
+            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-rose-900/40 via-purple-900/40 to-indigo-900/40 border-2 border-rose-500/60 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-black text-rose-300 uppercase flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span> 🎬 Grabación Automática MP4 Directo
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-black border border-rose-500/40">100% iPhone & PC</span>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-snug">
+                    Graba únicamente el recuadro del video con su audio y descarga automáticamente el archivo <strong>.mp4</strong> sin pedir permisos de pantalla ni restricciones de Safari.
+                </p>
+                <button onclick="startDirectCanvasMp4Recording()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs shadow-lg shadow-rose-600/30 flex items-center justify-center gap-1.5 transition transform hover:scale-101">
+                    <span>🔴</span> Iniciar y Descargar Video MP4
+                </button>
+            </div>
+
+            <div class="text-[10px] font-extrabold uppercase text-slate-400 pt-1 text-center">
+                — O elige el formato para grabar la pestaña del navegador —
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="selectRecordFormat('9-16')" id="opt-rec-9-16" class="rec-fmt-card p-3 rounded-2xl bg-amber-500/20 border-2 border-amber-400 text-left transition hover:scale-102">
+                    <div class="text-xl mb-1">📱</div>
+                    <div class="text-xs font-black text-amber-300 uppercase">9:16 Vertical</div>
+                    <div class="text-[10px] text-slate-400 font-bold">TikTok, Reels, Shorts</div>
+                </button>
+                <button onclick="selectRecordFormat('1-1')" id="opt-rec-1-1" class="rec-fmt-card p-3 rounded-2xl bg-slate-900 border border-slate-700 text-left transition hover:scale-102">
+                    <div class="text-xl mb-1">⬛</div>
+                    <div class="text-xs font-black text-white uppercase">1:1 Cuadrado</div>
+                    <div class="text-[10px] text-slate-400 font-bold">Instagram, Facebook Feed</div>
+                </button>
+                <button onclick="selectRecordFormat('16-9')" id="opt-rec-16-9" class="rec-fmt-card p-3 rounded-2xl bg-slate-900 border border-slate-700 text-left transition hover:scale-102">
+                    <div class="text-xl mb-1">📺</div>
+                    <div class="text-xs font-black text-white uppercase">16:9 Horizontal</div>
+                    <div class="text-[10px] text-slate-400 font-bold">YouTube, Web, TV</div>
+                </button>
+                <button onclick="selectRecordFormat('4-5')" id="opt-rec-4-5" class="rec-fmt-card p-3 rounded-2xl bg-slate-900 border border-slate-700 text-left transition hover:scale-102">
+                    <div class="text-xl mb-1">🖼️</div>
+                    <div class="text-xs font-black text-white uppercase">4:5 Retrato</div>
+                    <div class="text-[10px] text-slate-400 font-bold">Instagram Post Promos</div>
+                </button>
+            </div>
+
+            <!-- Audio Fidelity Box -->
+            <div class="p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-[11px] text-emerald-200 flex items-start gap-2.5">
+                <span class="text-base">🎙️</span>
+                <div class="space-y-0.5">
+                    <div class="font-extrabold text-white flex items-center gap-1.5">
+                        <span>Audio Digital Completo</span>
+                        <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-[9px] text-emerald-300">Voz IA + SFX + BGM</span>
+                    </div>
+                    <div class="text-[10px] text-emerald-300/90 leading-tight">
+                        Al pulsar Iniciar, recuerda marcar <strong>«Permitir también audio de las pestañas»</strong> en Chrome para guardar la música y los efectos sonoros en tu video.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Mic Mixer Toggle -->
+            <label class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 cursor-pointer hover:border-slate-700 transition">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">🎤</span>
+                    <div>
+                        <div class="text-[11px] font-bold text-slate-200">Mezclar Micrófono en la Grabación</div>
+                        <div class="text-[9px] text-slate-400">Captura tu propia voz en vivo o altavoces externos</div>
+                    </div>
+                </div>
+                <input type="checkbox" id="record-mic-toggle" class="w-4 h-4 accent-amber-500 rounded cursor-pointer">
+            </label>
+
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+                <button onclick="confirmAndStartRecording()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-rose-600 via-orange-500 to-amber-500 text-white font-black text-xs uppercase tracking-wider shadow-xl shadow-rose-600/30 flex items-center justify-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span> Iniciar Grabación
+                </button>
+                <button onclick="toggleRecordingMode(); closeRecordFormatModal();" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs">
+                    🎥 O Grabar Pantalla Completa (Modo Limpio Móvil)
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL GRABAR DESDE IPHONE CON PANTALLA LIMPIA -->
+    <div id="iphone-record-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-purple-500/50 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-black text-white flex items-center gap-2">
+                    <span>📱</span> Grabación de Pantalla en iPhone
+                </h3>
+                <button onclick="closeIphoneRecordModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                Para obtener la máxima calidad y resolución en tu iPhone:
+            </p>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 space-y-2.5 text-xs text-slate-200">
+                <div class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-purple-500 text-slate-950 font-black text-xs flex items-center justify-center flex-shrink-0">1</span>
+                    <span>Desliza desde la esquina superior derecha de tu iPhone y activa <strong>Grabar Pantalla</strong> (botón del círculo blanco/rojo).</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-purple-500 text-slate-950 font-black text-xs flex items-center justify-center flex-shrink-0">2</span>
+                    <span>Toca el botón verde <strong>"Iniciar Reel a Pantalla Completa"</strong> aquí abajo.</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-purple-500 text-slate-950 font-black text-xs flex items-center justify-center flex-shrink-0">3</span>
+                    <span>Se reproducirá limpio sin barras ni botones. Al terminar, detén la grabación de tu iPhone ¡y listo para publicar!</span>
+                </div>
+            </div>
+            <div class="pt-2 flex items-center justify-end gap-2">
+                <button onclick="closeIphoneRecordModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancelar</button>
+                <button onclick="startIphoneCleanPlayback()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 text-xs font-black shadow-lg shadow-emerald-500/25 flex items-center gap-2">
+                    <span>🎬</span> Iniciar Reel a Pantalla Completa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GENERADOR MÁGICO DE PLANTILLAS -->
+    <div id="template-generator-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-indigo-500/50 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-black text-white flex items-center gap-2">
+                    <span>🪄</span> Generador Mágico de Plantillas
+                </h3>
+                <button onclick="closeTemplateGeneratorModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                Escribe de qué es tu negocio o video y el sistema armará una plantilla completa con 5 escenas, animaciones, fondos e ilustraciones automáticas:
+            </p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-1">1. Tema, Nicho o Negocio</label>
+                    <input id="gen-tpl-niche" type="text" placeholder="Ej: Restaurante, Inmobiliaria, Cripto, Marketing IA, Fitness, Ropa..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-1">2. Marca o Handle</label>
+                        <input id="gen-tpl-brand" type="text" value="@nachotechrd" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-cyan-300">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-1">3. Web o Dominio</label>
+                        <input id="gen-tpl-domain" type="text" value="nakkio.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-amber-300 font-mono-code">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-1">4. Estilo / Fórmula Viral</label>
+                    <select id="gen-tpl-style" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-extrabold text-amber-300">
+                        <option value="curiosidad_atom">🦅 Curiosidad & Reto (Estilo Proyecto Atom)</option>
+                        <option value="ventas_dolor">💰 Dolor a Solución / Ventas en Automático (Estilo Hormozi)</option>
+                        <option value="tutorial_3p">🚀 Tutorial 3 Pasos ("Haz esto en 5 minutos")</option>
+                        <option value="desmintiendo_mito">❌ Desmintiendo Mito ("Te mintieron con...")</option>
+                        <option value="iceberg_secreto">🧊 El Efecto Iceberg (Lo que el 90% no sabe)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-800">
+                <button onclick="closeTemplateGeneratorModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancelar</button>
+                <button onclick="generateAndApplyMagicTemplate()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-500 text-white text-xs font-black shadow-lg shadow-indigo-500/25 flex items-center gap-1.5">
+                    <span>✨</span> Crear y Aplicar Plantilla
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL GEMINI IA: 1 FRASE ➔ REEL COMPLETO CON ORTOGRAFÍA PERFECTA -->
+    <div id="gemini-generator-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0b1120] border-2 border-cyan-500/60 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 relative overflow-hidden">
+            <!-- Glowing background aura -->
+            <div class="absolute -top-20 -right-20 w-52 h-52 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-52 h-52 bg-cyan-600/30 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 relative z-10">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-400 via-cyan-400 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-md">
+                        ✨
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white leading-tight">
+                            Director IA: Azure GPT-5.6 &amp; Gemini
+                        </h3>
+                        <p class="text-[11px] text-cyan-300 font-bold">Guion viral, ortografía perfecta, ganchos e imágenes con gpt-image-2</p>
+                    </div>
+                </div>
+                <button onclick="closeGeminiModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <!-- AI ENGINE SWITCHER (AZURE GPT-5.6 / GOOGLE GEMINI) -->
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-700/80 relative z-10">
+                <button type="button" id="ai-engine-btn-azure" onclick="setAIGeneratorEngine('azure')" class="py-2 px-3 rounded-lg text-xs font-black bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow transition">
+                    🔷 Azure GPT-5.6 (Vercel / Foundry)
+                </button>
+                <button type="button" id="ai-engine-btn-gemini" onclick="setAIGeneratorEngine('gemini')" class="py-2 px-3 rounded-lg text-xs font-black text-slate-300 hover:text-white transition">
+                    ✨ Google Gemini Flash
+                </button>
+            </div>
+
+            <!-- AZURE ENGINE INFO BANNER -->
+            <div id="azure-engine-info-box" class="bg-sky-950/40 border border-sky-500/40 rounded-2xl p-3 space-y-2 relative z-10">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <span class="text-[11px] font-black text-sky-300 flex items-center gap-1.5">
+                        <span>🎬</span> Modo Director Automático Azure (<code class="text-cyan-200">gpt-5.6-sol + gpt-image-2</code>)
+                    </span>
+                    <div class="flex items-center gap-2">
+                        <span id="azure-key-status" class="text-[10px] font-bold text-slate-400"></span>
+                        <button type="button" onclick="testAzureDeployment()" class="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/35 text-sky-200 border border-sky-400/40 text-[10px] font-bold">
+                            ⚡ Probar
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-1.5 pt-0.5">
+                    <label class="flex items-center gap-2 text-[11px] font-bold text-slate-200 cursor-pointer">
+                        <input id="azure-auto-images-toggle" type="checkbox" checked class="accent-sky-400 rounded w-3.5 h-3.5">
+                        <span>🎨 Arte Híbrido Inteligente (usa SVGs 2.5D + genera 1-2 fondos con <strong class="text-sky-300">gpt-image-2</strong>)</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-[11px] font-bold text-slate-200 cursor-pointer">
+                        <input id="azure-auto-voice-toggle" type="checkbox" checked class="accent-emerald-400 rounded w-3.5 h-3.5">
+                        <span>🎙️ Auto-Narrar Voz al terminar (clip 100% listo para grabar)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- API KEY FIELD (With Auto-Save) -->
+            <div id="gemini-key-config-box" class="hidden bg-slate-900/95 border border-slate-700/80 rounded-2xl p-3.5 space-y-2 relative z-10">
+                <div class="flex items-center justify-between">
+                    <label class="text-[11px] font-black uppercase text-amber-300 flex items-center gap-1.5">
+                        <span>🔑</span> Tu Google Gemini API Key:
+                    </label>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] font-extrabold text-cyan-400 hover:underline">
+                        Obtener clave gratis ↗
+                    </a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input id="gemini-api-key-input" type="password" placeholder="Pega tu clave AIzaSy... (Se guarda automáticamente)" oninput="saveGeminiApiKey(this.value)" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code font-bold text-white focus:outline-none focus:border-cyan-400">
+                    <button onclick="toggleGeminiKeyVisibility()" class="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold" title="Ver / Ocultar clave">
+                        👁️
+                    </button>
+                    <button onclick="testGeminiApiKey()" class="px-3 py-2 rounded-xl bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition flex items-center gap-1 shadow flex-shrink-0">
+                        ⚡ Probar
+                    </button>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                    <p class="text-[10px] text-slate-400">Tu clave se guarda segura en tu navegador (localStorage).</p>
+                    <div id="gemini-key-status"></div>
+                </div>
+            </div>
+
+            <!-- PROMPT / TOPIC FIELD (1 FRASE O RANDOM AUTOMÁTICO) -->
+            <div class="space-y-2 relative z-10">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <label class="text-[11px] font-extrabold uppercase text-white">
+                        💬 Tema o idea corta (opcional en Modo Director):
+                    </label>
+                    <div class="flex items-center gap-1.5">
+                        <select id="director-category-select" class="bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-[10px] font-extrabold text-amber-300 outline-none">
+                            <option value="random">🔥 Mix Sorpresa</option>
+                            <option value="negocio">🏪 Negocio / Ventas</option>
+                            <option value="curiosidad">🧠 Curiosidad Viral</option>
+                            <option value="ciencia">🔬 Ciencia / Mitos</option>
+                            <option value="tech">🤖 Tech &amp; Celulares</option>
+                            <option value="dinero">💰 Dinero &amp; Finanzas</option>
+                        </select>
+                        <button type="button" onclick="triggerRandomDirectorIdea()" class="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-[10px] font-black flex items-center gap-1 shadow transition">
+                            🎲 Idea Random
+                        </button>
+                    </div>
+                </div>
+                <textarea id="gemini-topic-input" rows="2" placeholder="Déjalo vacío para que el Director IA invente un video random, o escribe 2 palabras (ej: 'ventas WhatsApp' o 'batería iPhone')..." class="w-full bg-slate-900 border border-slate-700 rounded-2xl p-3 text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-amber-400 shadow-inner"></textarea>
+                
+                <!-- Quick Suggestion Pills -->
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-[10px] text-slate-400 font-bold self-center">Atajos:</span>
+                    <button onclick="fillGeminiTopic('¿Por qué se afloja una tuerca aunque la aprietes con todas tus fuerzas?')" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-800/80 text-amber-300 hover:bg-slate-700 border border-slate-700">🔩 Tuerca</button>
+                    <button onclick="fillGeminiTopic('Cómo vender por WhatsApp a las 11 PM sin estar despierto')" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-800/80 text-emerald-300 hover:bg-slate-700 border border-slate-700">🤖 Nakkio IA</button>
+                    <button onclick="fillGeminiTopic('El error en la caja de tu negocio que te cuesta miles al mes')" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-800/80 text-cyan-300 hover:bg-slate-700 border border-slate-700">🏪 Posent POS</button>
+                    <button onclick="fillGeminiTopic('Por qué el 90% de los negocios fracasan en internet sin un sistema')" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-slate-800/80 text-purple-300 hover:bg-slate-700 border border-slate-700">🧊 Iceberg</button>
+                </div>
+            </div>
+
+            <!-- CONFIGURATION GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 relative z-10">
+                <div>
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Fórmula de Retención</label>
+                    <select id="gemini-formula-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-amber-300">
+                        <option value="curiosidad_atom">🦅 Curiosidad Atom (Reto)</option>
+                        <option value="ventas_directas">💰 Dolor a Solución (Ventas)</option>
+                        <option value="tutorial_3p">🚀 Tutorial 3 Pasos</option>
+                        <option value="desmintiendo">❌ Desmintiendo Mitos</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Diseño de Subtítulos</label>
+                    <select id="gemini-sub-style-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-cyan-300">
+                        <option value="hl-pill">🟨 Amarillo Atom</option>
+                        <option value="hl-tiktok-green" selected>🟩 TikTok Green Pop</option>
+                        <option value="hl-mrbeast">🦁 MrBeast Explosivo</option>
+                        <option value="hl-box">🟦 Caja Hormozi</option>
+                        <option value="hl-clean-white">🤍 Blanca Minimal</option>
+                        <option value="hl-red-alert">🚨 Alerta Roja</option>
+                        <option value="hl-purple-neon">💜 Púrpura Neón</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Tu Marca / Handle</label>
+                    <input id="gemini-brand-input" type="text" value="@nachotechrd" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-bold text-white">
+                </div>
+            </div>
+
+            <!-- COLLAPSED BRIDGE FOR EXTERNAL COMMUNITY MANAGER AGENT -->
+            <details class="bg-slate-900/70 border border-slate-800 rounded-2xl px-3 py-2 text-[11px] relative z-10">
+                <summary class="cursor-pointer font-bold text-slate-300 hover:text-white flex items-center justify-between select-none">
+                    <span>🤖 Conectar tu otro Agente Community Manager (API JSON)</span>
+                    <span class="text-[10px] text-cyan-400">Ver endpoint ▾</span>
+                </summary>
+                <div class="pt-2 mt-2 border-t border-slate-800 space-y-2 text-[10px] text-slate-400">
+                    <p>Tu agente externo puede enviar un <code class="text-cyan-300">POST /api/azure-ai</code> con pocos datos y recibe el JSON completo de 5 escenas listo para importar:</p>
+                    <pre id="external-agent-snippet" class="bg-slate-950 border border-slate-800 rounded-xl p-2 text-[10px] text-emerald-300 overflow-x-auto font-mono-code">POST https://2dclip.vercel.app/api/azure-ai
+{"action":"director","category":"negocio","topic":"opcional o RANDOM","brand":"@nachotechrd"}</pre>
+                    <button type="button" onclick="copyExternalAgentSnippet()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold border border-slate-700">
+                        📋 Copiar Endpoint y JSON
+                    </button>
+                </div>
+            </details>
+
+            <!-- LIVE STATUS CHECKLIST -->
+            <div id="gemini-loading-box" class="hidden bg-slate-950 border border-cyan-500/50 rounded-2xl p-3.5 space-y-1.5 text-xs relative z-10">
+                <div class="flex items-center gap-2 font-black text-cyan-300">
+                    <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span>Director Automático trabajando...</span>
+                </div>
+                <div id="gemini-step-1" class="text-slate-400 flex items-center gap-2 font-bold"><span>⏳</span> Conectando con Director IA...</div>
+                <div id="gemini-step-2" class="text-slate-400 flex items-center gap-2 font-bold"><span>⏳</span> Escribiendo guion, ganchos y coreografía 2.5D...</div>
+                <div id="gemini-step-3" class="text-slate-400 flex items-center gap-2 font-bold"><span>⏳</span> Preparando arte visual, sonidos y voz...</div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-800 relative z-10">
+                <button onclick="closeGeminiModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancelar</button>
+                <button onclick="generateVideoWithGemini()" id="btn-generate-gemini-action" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white text-xs font-black shadow-xl shadow-cyan-600/30 flex items-center gap-2 transition hover:scale-105">
+                    <span>⚡</span> Generar Video Viral Ahora
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL: GALERÍA DE PLANTILLAS VIRALES PRO -->
+    <div id="template-gallery-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0b101c] border-2 border-purple-500/50 rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow">
+                        🪄
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white leading-tight">
+                            Galería de Plantillas Virales
+                        </h3>
+                        <p class="text-[11px] text-purple-300 font-bold">Historias comprobadas de alta retención listas en 1 clic</p>
+                    </div>
+                </div>
+                <button onclick="closeTemplateGalleryModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <!-- Template Cards Grid (Scrollable) -->
+            <div class="flex-1 overflow-y-auto space-y-2.5 pr-1 text-xs">
+                
+                                <!-- 0.1 Agua al Coco (Viral) -->
+                <div onclick="selectTemplateFromGallery('atom_coco')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-sky-500/10 border border-sky-500/20">🥥</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-sky-400 flex items-center gap-1.5">
+                                ¿Cómo Entra el Agua al Coco?
+                                <span class="text-[9px] bg-sky-500/20 text-sky-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Botánica Viral</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Cómo diablos entra el agua adentro de un coco sellado?". Ósmosis capilar y agua estéril.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-sky-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.2 Cómo Funciona un Teléfono Móvil -->
+                <div onclick="selectTemplateFromGallery('atom_telefono')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20">📱</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-cyan-400 flex items-center gap-1.5">
+                                ¿Cómo Funciona un Teléfono Móvil?
+                                <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Tecnología</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Cómo hablas al otro lado del mundo sin cables?". Ondas a 300,000 km/s y código binario.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-cyan-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.3 Cómo Funciona el Internet (Cables Submarinos) -->
+                <div onclick="selectTemplateFromGallery('atom_internet')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-blue-500/10 border border-blue-500/20">🌊</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-blue-400 flex items-center gap-1.5">
+                                ¿Cómo Funciona el Internet Realmente?
+                                <span class="text-[9px] bg-blue-500/20 text-blue-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Infraestructura</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Te mintieron: el 99% del internet no está en satélites". Cables submarinos de fibra óptica.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-blue-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.4 Cómo Hacer Estos Videos 2D con IA -->
+                <div onclick="selectTemplateFromGallery('atom_videos_ia')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">🎬</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-emerald-400 flex items-center gap-1.5">
+                                Cómo Hacer Estos Videos 2D con IA
+                                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Meta-Viral</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Este formato exacto genera millones de vistas". Fórmula de retención, karaoke y guion IA.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-emerald-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.5 Cómo Vuela un Avión de 400 Toneladas -->
+                <div onclick="selectTemplateFromGallery('atom_avion')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-sky-500/10 border border-sky-500/20">✈️</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-sky-400 flex items-center gap-1.5">
+                                ¿Cómo Vuela un Avión de 400 Toneladas?
+                                <span class="text-[9px] bg-sky-500/20 text-sky-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Física Real</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Cómo flota una mole de acero como si fuera pluma?". Principio de Bernoulli y sustentación.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-sky-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.6 Por Qué el Tiempo Pasa Más Rápido al Envejecer -->
+                <div onclick="selectTemplateFromGallery('atom_tiempo_edad')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/20">⏳</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-amber-400 flex items-center gap-1.5">
+                                ¿Por Qué el Tiempo Pasa Más Rápido de Adulto?
+                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Neurología</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "De niño las vacaciones eran eternas; de adulto el año vuela". Proporción de Janet y memoria.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-amber-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.7 Por Qué los Ricos No Ahorran en Bancos -->
+                <div onclick="selectTemplateFromGallery('atom_ricos_dinero')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-yellow-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20">💰</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-yellow-400 flex items-center gap-1.5">
+                                ¿Por Qué los Ricos No Ahorran en Bancos?
+                                <span class="text-[9px] bg-yellow-500/20 text-yellow-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Finanzas</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Los multimillonarios hacen lo contrario a tus padres". Inflación, activos y flujo constante.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-yellow-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.8 Por Qué Da Sueño Después de Comer Pesado -->
+                <div onclick="selectTemplateFromGallery('atom_sueno_comer')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-rose-500/10 border border-rose-500/20">🥱</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-rose-400 flex items-center gap-1.5">
+                                ¿Por Qué Da Sueño al Comer Pesado?
+                                <span class="text-[9px] bg-rose-500/20 text-rose-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Biohacking</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Por qué tus párpados pesan una tonelada tras almorzar?". Picos de glucosa, insulina y triptófano.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-rose-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.9 Cómo Funciona la Inteligencia Artificial Realmente -->
+                <div onclick="selectTemplateFromGallery('atom_como_ia')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-purple-500/10 border border-purple-500/20">🤖</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-purple-400 flex items-center gap-1.5">
+                                ¿Cómo Funciona la IA Realmente?
+                                <span class="text-[9px] bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded font-mono-code font-bold">IA Fundamentos</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "No piensa como humano ni tiene conciencia". Matrices matemáticas y probabilidades de tokens.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-purple-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.10 El Misterio del Efecto Placebo -->
+                <div onclick="selectTemplateFromGallery('atom_placebo')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-pink-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-pink-500/10 border border-pink-500/20">💊</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-pink-400 flex items-center gap-1.5">
+                                El Misterio del Efecto Placebo
+                                <span class="text-[9px] bg-pink-500/20 text-pink-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Ciencia Médica</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Una pastilla de azúcar que cura dolores físicos reales". La farmacia química del cerebro.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-pink-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.11 Mito del Arroz (NachoTechRD) -->
+                <div onclick="selectTemplateFromGallery('nt_arroz_mito')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-rose-500/10 border border-rose-500/20">🚨</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-rose-400 flex items-center gap-1.5">
+                                El Mito del Arroz en Celulares Mojados
+                                <span class="text-[9px] bg-rose-500/20 text-rose-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Hardware Tech</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Si se moja tu celular, meterlo en arroz lo condena a muerte". Corrosión y micro-soldadura.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-rose-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.12 Cargadores Falsos e IC -->
+                <div onclick="selectTemplateFromGallery('nt_carga_nocturna')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/20">🔌</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-amber-400 flex items-center gap-1.5">
+                                Carga Nocturna y Cables Falsos
+                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Diagnóstico IC</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Cargas tu celular toda la noche con cable genérico?". Picos de voltaje y Tristar dañado.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-amber-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.13 Toque Fantasma -->
+                <div onclick="selectTemplateFromGallery('nt_pantalla_fantasma')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20">👻</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-cyan-400 flex items-center gap-1.5">
+                                Pantalla Loca: El Toque Fantasma
+                                <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Solución Real</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Tu celular abre apps solo y escribe sin tocarlo?". Malla capacitiva y test de líneas.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-cyan-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.14 Servidor GSM -->
+                <div onclick="selectTemplateFromGallery('nt_desbloqueo_gsm')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">🔓</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-emerald-400 flex items-center gap-1.5">
+                                Servidor GSM y Activaciones NachoTech
+                                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Servidor Activo</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Para técnicos de celulares que pierden horas esperando créditos". Activaciones 24/7 automáticas.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-emerald-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.15 Nakkio Ventas 2AM -->
+                <div onclick="selectTemplateFromGallery('nakkio_embudo_3am')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-green-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-green-500/10 border border-green-500/20">🌙</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-green-400 flex items-center gap-1.5">
+                                Nakkio: Ventas a las 2:00 AM en WhatsApp
+                                <span class="text-[9px] bg-green-500/20 text-green-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Ventas 24/7</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Un cliente te escribe en la madrugada listo para comprar". Respuestas en 2 segundos con IA.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-green-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.16 Nakkio Seguimiento -->
+                <div onclick="selectTemplateFromGallery('nakkio_seguimiento')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-blue-500/10 border border-blue-500/20">📊</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-blue-400 flex items-center gap-1.5">
+                                El «Luego te Aviso» Mata el 80% de Ventas
+                                <span class="text-[9px] bg-blue-500/20 text-blue-300 px-1.5 py-0.2 rounded font-mono-code font-bold">CRM Inteligente</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "El 80% que dice 'luego te aviso' nunca vuelve". Seguimiento automático para recuperar clientes.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-blue-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.17 Posent Inventario Vivo -->
+                <div onclick="selectTemplateFromGallery('posent_inventario_vivo')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-yellow-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20">🏪</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-yellow-400 flex items-center gap-1.5">
+                                Posent PRO: Control de Inventario al Segundo
+                                <span class="text-[9px] bg-yellow-500/20 text-yellow-300 px-1.5 py-0.2 rounded font-mono-code font-bold">POSENT PRO</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Si tienes que ir al local para saber cuánto vendiste, tienes un autoempleo". Facturación y stock en vivo.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-yellow-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.18 Clonar Sistemas NTDESWEB -->
+                <div onclick="selectTemplateFromGallery('nt_clonar_sistema')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-sky-500/10 border border-sky-500/20">💻</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-sky-400 flex items-center gap-1.5">
+                                No Trabajes Más Horas: Construye Sistemas
+                                <span class="text-[9px] bg-sky-500/20 text-sky-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Arquitectura IA</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "La diferencia de un negocio que escala 10X es su software". Automatización y ecosistema NTDESWEB.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-sky-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.19 Reto Dedo Anular -->
+                <div onclick="selectTemplateFromGallery('reto_dedo_mesa')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-orange-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-orange-500/10 border border-orange-500/20">🖐️</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-orange-400 flex items-center gap-1.5">
+                                Reto Imposible: El Dedo Anular Pegado
+                                <span class="text-[9px] bg-orange-500/20 text-orange-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Reto Anatómico</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Dobla el dedo medio hacia adentro e intenta levantar el anular". Bloqueo del tendón extensor común.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-orange-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.20 Reto Pie y Número 6 -->
+                <div onclick="selectTemplateFromGallery('reto_pie_reloj')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-teal-500/10 border border-teal-500/20">🔄</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-teal-400 flex items-center gap-1.5">
+                                Cortocircuito: Gira el Pie y Dibuja el 6
+                                <span class="text-[9px] bg-teal-500/20 text-teal-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Neurociencia</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Gira el pie como el reloj y dibuja un 6 con la mano". Interferencia del hemisferio izquierdo.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-teal-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.21 Punto Ciego -->
+                <div onclick="selectTemplateFromGallery('reto_punto_ciego')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20">👁️</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-indigo-400 flex items-center gap-1.5">
+                                El Punto Ciego de tus Propios Ojos
+                                <span class="text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Ilusión Real</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Tus ojos tienen un agujero ciego que tu cerebro rellena". Simulación biológica en tiempo real.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-indigo-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.22 Mito de los 5 Segundos -->
+                <div onclick="selectTemplateFromGallery('mito_5_segundos')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-rose-500/10 border border-rose-500/20">🍕</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-rose-400 flex items-center gap-1.5">
+                                La Regla de los 5 Segundos es Falsa
+                                <span class="text-[9px] bg-rose-500/20 text-rose-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Mito Destruido</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Recoges la comida del piso antes de 5 segundos?". Bacterias transferidas en 10 milisegundos.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-rose-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.23 Mito del 10% del Cerebro -->
+                <div onclick="selectTemplateFromGallery('mito_cerebro_10')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-purple-500/10 border border-purple-500/20">🧠</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-purple-400 flex items-center gap-1.5">
+                                ¿Solo Usamos el 10% del Cerebro?
+                                <span class="text-[9px] bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Neurociencia</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "El mito de Hollywood de que el 90% está dormido". Escáner fMRI del 100% y sinapsis activa.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-purple-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.24 Contagio del Bostezo -->
+                <div onclick="selectTemplateFromGallery('curiosidad_bostezo')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/20">🥱</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-amber-400 flex items-center gap-1.5">
+                                Por Qué es Tan Contagioso el Bostezo
+                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Biología Real</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Vas a sentir ganas de bostezar en 20 segundos". El radiador cerebral y las neuronas espejo.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-amber-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 0.25 Por Qué da Déjà Vu -->
+                <div onclick="selectTemplateFromGallery('curiosidad_dejavu')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20">🌀</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-cyan-400 flex items-center gap-1.5">
+                                El Misterio del Déjà Vu en tu Cerebro
+                                <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Glitch Mental</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "¿Sientes con total certeza que ya lo habías vivido?". Desfase en el hipocampo y memoria sana.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-cyan-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+<!-- 1. Truco Brazos -->
+                <div onclick="selectTemplateFromGallery('atom_brazos')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/20">🦅</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-amber-400 flex items-center gap-1.5">
+                                Truco de los Brazos (Estilo Proyecto Atom)
+                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Reto 30s</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Tu brazo va a subir solo". Curiosidad física y efecto kinestésico.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-amber-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 2. Sal del Mar -->
+                <div onclick="selectTemplateFromGallery('atom_sal')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20">🌊</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-cyan-400 flex items-center gap-1.5">
+                                ¿Por Qué el Mar Tiene Sal?
+                                <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Ciencia Atom</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Por qué no se acaba la sal del mar". Explicación de lluvia, rocas y magma.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-cyan-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 3. Te Mintieron -->
+                <div onclick="selectTemplateFromGallery('atom_mintieron')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-rose-500/10 border border-rose-500/20">💍</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-rose-400 flex items-center gap-1.5">
+                                Te Mintieron: El Engaño de los Diamantes
+                                <span class="text-[9px] bg-rose-500/20 text-rose-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Desmintiendo</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "No son raros ni escasos". Cómo el marketing inventó la escasez.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-rose-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 4. Nakkio IA -->
+                <div onclick="selectTemplateFromGallery('nakkio')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">🤖</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-emerald-400 flex items-center gap-1.5">
+                                Nakkio IA 24/7 (Ventas por WhatsApp)
+                                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Ventas & Leads</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "Cómo vender a las 11 PM durmiendo". Chat en vivo y conversión.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-emerald-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 5. Posent POS -->
+                <div onclick="selectTemplateFromGallery('posent')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-blue-500/10 border border-blue-500/20">🏪</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-blue-400 flex items-center gap-1.5">
+                                PosentRD (Punto de Venta & Caja)
+                                <span class="text-[9px] bg-blue-500/20 text-blue-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Negocios</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Gancho: "El error en caja que te cuesta miles". Terminal con escáner láser.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-blue-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 6. NTRadar -->
+                <div onclick="selectTemplateFromGallery('ntradar')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-purple-500/10 border border-purple-500/20">📡</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-purple-400 flex items-center gap-1.5">
+                                NTRadar (Google Places + Gemini IA)
+                                <span class="text-[9px] bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Prospección B2B</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Búsqueda con Google Places API + Auditoría con Gemini IA y mini informe con botón de WhatsApp.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-purple-500 group-hover:text-white font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 7. Tutorial 3 Pasos -->
+                <div onclick="selectTemplateFromGallery('atom_tutorial_3pasos')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-orange-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-orange-500/10 border border-orange-500/20">🚀</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-orange-400 flex items-center gap-1.5">
+                                Tutorial Rápido en 3 Pasos
+                                <span class="text-[9px] bg-orange-500/20 text-orange-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Educativo</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Fórmula paso a paso de alta retención para enseñar cualquier habilidad.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-orange-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+                <!-- 8. Iceberg Oculto -->
+                <div onclick="selectTemplateFromGallery('atom_iceberg_secreto')" class="p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-500/50 cursor-pointer transition flex items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl p-2 rounded-xl bg-teal-500/10 border border-teal-500/20">🧊</span>
+                        <div>
+                            <div class="font-black text-white group-hover:text-teal-400 flex items-center gap-1.5">
+                                El Secreto Oculto (Efecto Iceberg)
+                                <span class="text-[9px] bg-teal-500/20 text-teal-300 px-1.5 py-0.2 rounded font-mono-code font-bold">Misterio</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-snug">Lo que la gente ve arriba vs la realidad oculta bajo el agua.</p>
+                        </div>
+                    </div>
+                    <button class="px-3 py-1.5 rounded-xl bg-slate-800 group-hover:bg-teal-500 group-hover:text-slate-950 font-black text-[11px] text-slate-300 transition whitespace-nowrap">
+                        Usar ➔
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Bottom Action -->
+            <div class="border-t border-slate-800 pt-3 flex items-center justify-between gap-2 flex-shrink-0">
+                <button onclick="closeTemplateGalleryModal(); openTemplateGeneratorModal();" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs flex items-center gap-1.5 shadow">
+                    <span>🪄</span> Generar Nueva con IA
+                </button>
+                <button onclick="closeTemplateGalleryModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MODAL DE AUTENTICACIÓN / REGISTRO / LOGIN MULTIDISPOSITIVO -->
+    <div id="cloud-auth-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-cyan-500/40 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-black text-white flex items-center gap-2">
+                    <span>☁️</span> Sincronización Multidispositivo
+                </h3>
+                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <!-- Tabs: Iniciar Sesión / Registrarse -->
+            <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-extrabold">
+                <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg bg-cyan-600 text-white shadow">
+                    Iniciar Sesión
+                </button>
+                <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white">
+                    Crear Cuenta Gratis
+                </button>
+            </div>
+
+            <!-- Formulario de Login / Registro -->
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-3">
+                <div id="auth-field-name" class="hidden">
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Tu Nombre o Negocio</label>
+                    <input id="auth-input-name" type="text" placeholder="Ej: Nacho Tech" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400" />
+                </div>
+                <div>
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Correo Electrónico</label>
+                    <input id="auth-input-email" type="email" required placeholder="tu@correo.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400" />
+                </div>
+                <div>
+                    <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Contraseña</label>
+                    <input id="auth-input-password" type="password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400" />
+                </div>
+                <div id="auth-error-msg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/30 p-2.5 rounded-xl font-bold"></div>
+                <div id="auth-success-msg" class="hidden text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 p-2.5 rounded-xl font-bold"></div>
+                <button id="auth-submit-btn" type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black text-xs shadow-lg shadow-cyan-600/30 transition">
+                    Entrar a mi Cuenta
+                </button>
+            </form>
+
+            <!-- Sección de usuario activo (si ya está logueado) -->
+            <div id="auth-logged-in-section" class="hidden space-y-3 pt-2 border-t border-slate-800">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                    <span>Sesión actual: <strong id="logged-user-email" class="text-cyan-300"></strong></span>
+                    <span id="logged-user-badge" class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black border border-amber-500/30">ADMIN</span>
+                </div>
+                <button onclick="handleLogout()" class="w-full py-2 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition">
+                    Cerrar Sesión en este dispositivo
+                </button>
+            </div>
+            <p class="text-[11px] text-slate-400 text-center leading-relaxed">
+                🔒 Tus proyectos, audios y configuraciones se guardan en la nube para que nunca pierdas nada al borrar la caché de Safari o la PC.
+            </p>
+        </div>
+    </div>
+
+    <!-- MODAL DE GESTIÓN DE PROYECTOS EN LA NUBE -->
+    <div id="cloud-projects-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-cyan-500/40 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-shrink-0">
+                <div>
+                    <h3 class="text-base font-black text-white flex items-center gap-2">
+                        <span>📂</span> Mis Proyectos en la Nube (MongoDB Atlas)
+                    </h3>
+                    <p class="text-xs text-slate-400">Accede a tus videos desde cualquier teléfono o computadora</p>
+                </div>
+                <button onclick="closeCloudProjectsModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <!-- Barra de acción rápida -->
+            <div class="flex items-center justify-between gap-2 flex-shrink-0">
+                <button onclick="saveCurrentProjectToCloud(true)" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-black flex items-center gap-1.5 shadow">
+                    <span>➕</span> Guardar Proyecto Actual Como Nuevo
+                </button>
+                <button onclick="loadCloudProjectsList()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1">
+                    <span>🔄</span> Refrescar
+                </button>
+            </div>
+
+            <!-- Lista de Proyectos Guardados -->
+            <div id="cloud-projects-list" class="flex-1 overflow-y-auto space-y-2.5 pr-1 min-h-[220px]">
+                <div class="flex items-center justify-center py-12 text-slate-400 text-xs font-bold gap-2">
+                    <span class="animate-spin">⏳</span> Cargando proyectos de la nube...
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-3 flex items-center justify-between text-xs text-slate-400 flex-shrink-0">
+                <span id="cloud-projects-count">0 proyectos guardados</span>
+                <button onclick="closeCloudProjectsModal()" class="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CENTRO DE CLAVES API Y PREFERENCIAS -->
+    <div id="api-keys-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-amber-500/40 rounded-3xl max-w-xl w-full max-h-[90vh] flex flex-col p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-shrink-0">
+                <div>
+                    <h3 class="text-base font-black text-white flex items-center gap-2">
+                        <span>🔑</span> Centro de Claves API (Azure Foundry, Gemini &amp; ElevenLabs)
+                    </h3>
+                    <p class="text-[11px] text-slate-400">Se guardan en este navegador y en tu cuenta nube automáticamente.</p>
+                </div>
+                <button onclick="closeApiKeysModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto space-y-3 pr-1">
+                <!-- Azure AI Foundry / OpenAI -->
+                <div class="bg-sky-950/30 border border-sky-500/40 rounded-2xl p-3 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[11px] font-black uppercase text-sky-300">🔷 Azure AI Foundry (Texto GPT-5.6 + Imagen gpt-image-2)</label>
+                        <button type="button" onclick="testAzureDeployment('modal-azure-status')" class="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/35 border border-sky-400/40 text-sky-200 text-[10px] font-bold">Probar Azure</button>
+                    </div>
+                    <p class="text-[10px] text-slate-400">Si ya configuraste <code class="text-sky-300">AZURE_OPENAI_*</code> en Vercel, puedes dejar estos campos en blanco y el servidor usará los de Vercel automáticamente.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input id="modal-azure-endpoint-input" type="text" placeholder="Endpoint (opcional, ej: https://nachotechrd-3587.openai.azure.com)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-[11px] font-mono-code text-white focus:outline-none focus:border-sky-400">
+                        <input id="modal-azure-key-input" type="password" placeholder="Azure API Key (opcional si está en Vercel)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-[11px] font-mono-code text-white focus:outline-none focus:border-sky-400">
+                        <input id="modal-azure-chat-dep-input" type="text" placeholder="Deployment Texto (nt-2d-clip-gpt-5.6-sol-1)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-[11px] font-mono-code text-sky-200 focus:outline-none focus:border-sky-400">
+                        <input id="modal-azure-img-dep-input" type="text" placeholder="Deployment Imagen (gpt-image-2)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-[11px] font-mono-code text-sky-200 focus:outline-none focus:border-sky-400">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                        <input id="modal-azure-speech-key-input" type="password" placeholder="Azure Speech Key (para voces Neurales)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-[11px] font-mono-code text-cyan-200 focus:outline-none focus:border-sky-400">
+                        <input id="modal-azure-speech-region-input" type="text" placeholder="Región Azure Speech (ej: eastus, eastus2)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-[11px] font-mono-code text-cyan-200 focus:outline-none focus:border-sky-400">
+                    </div>
+                    <div id="modal-azure-status" class="text-[10px] text-slate-400">Soporta GPT-5.6-sol, gpt-image-2 y voces Azure Neurales.</div>
+                </div>
+
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-[11px] font-black uppercase text-purple-300">✨ Google Gemini API Key (Guiones IA)</label>
+                        <button type="button" onclick="testGeminiFromHub()" class="px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-200 text-[10px] font-bold">Probar Clave</button>
+                    </div>
+                    <input id="modal-gemini-key-input" type="password" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code font-bold text-white focus:outline-none focus:border-purple-400">
+                    <div id="modal-gemini-status" class="text-[10px] text-slate-400">Compatible con Gemini 2.5 Flash y 2.0 Flash.</div>
+                </div>
+
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2">
+                    <label class="block text-[11px] font-black uppercase text-amber-300">🎙️ ElevenLabs API Key (Voces Ultra-Realistas)</label>
+                    <input id="modal-eleven-key-input" type="password" placeholder="sk_..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono-code font-bold text-amber-300 focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Marca Predeterminada</label>
+                        <input id="modal-default-brand-input" type="text" placeholder="@nachotechrd" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Dominio Web</label>
+                        <input id="modal-default-domain-input" type="text" placeholder="nakkio.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-cyan-300">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800 flex-shrink-0">
+                <button type="button" onclick="closeApiKeysModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Cancelar</button>
+                <button type="button" onclick="saveApiKeysAndSettings()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-xs font-black shadow-lg">
+                    💾 Guardar Todo Permanentemente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GALERÍA VISUAL DE INGREDIENTES RECICLABLES -->
+    <div id="ingredients-gallery-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0e1422] border border-cyan-500/40 rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-shrink-0">
+                <div>
+                    <h3 class="text-base font-black text-white flex items-center gap-2">
+                        <span>🎨</span> Galería de Ingredientes Visuales 2.5D
+                    </h3>
+                    <p id="ingredients-target-label" class="text-xs text-cyan-300 font-bold">Elige un recurso SVG, tus imágenes o genera una nueva con Azure</p>
+                </div>
+                <button onclick="closeIngredientsGallery()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 flex-shrink-0">
+                <input id="ingredients-search-input" type="text" oninput="filterIngredientsGallery(this.value)" placeholder="Buscar personaje, cohete, dinero, WhatsApp, seguridad, cerebro..." class="flex-1 min-w-[200px] bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
+                <button type="button" onclick="closeIngredientsGallery(); openAzureImageModal(activeIngredientTargetProp);" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs font-black shadow-lg">
+                    🪄 Crear con Azure gpt-image-2
+                </button>
+            </div>
+
+            <div id="ingredients-gallery-grid" class="flex-1 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 pr-1 min-h-[260px]">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GENERADOR DE IMÁGENES AZURE (gpt-image-2) -->
+    <div id="azure-image-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0b1120] border-2 border-sky-500/60 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div>
+                    <h3 class="text-base font-black text-white flex items-center gap-2">
+                        <span>🎨</span> Generador de Imagen IA (Azure gpt-image-2)
+                    </h3>
+                    <p id="azure-img-target-label" class="text-[11px] text-sky-300 font-bold">Se guarda automáticamente en Cloudinary y en tus Ingredientes Reciclables</p>
+                </div>
+                <button onclick="closeAzureImageModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-[11px] font-extrabold uppercase text-slate-300">Describe la ilustración o escena:</label>
+                        <button type="button" onclick="autofillAzureImagePromptFromScene()" class="text-[10px] font-bold text-sky-300 hover:underline">✨ Tomar idea de esta escena</button>
+                    </div>
+                    <textarea id="azure-image-prompt-input" rows="3" placeholder="Ej: Un cohete dorado despegando desde un smartphone con monedas flotantes, estilo 2.5D limpio..." class="w-full bg-slate-950 border border-slate-700 rounded-2xl p-3 text-xs font-bold text-white focus:outline-none focus:border-sky-400"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Estilo Visual</label>
+                        <select id="azure-image-style-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-bold text-sky-200">
+                            <option value="vector25d">🎨 Ilustración Vector 2.5D Limpia</option>
+                            <option value="isometric_saas">🧊 Diorama Isométrico Tech / SaaS</option>
+                            <option value="sticker_prop">🧩 Objeto / Prop Protagonista</option>
+                            <option value="backdrop916">🎬 Fondo Cinematográfico Escena</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold uppercase text-slate-400 mb-1">Proporción / Tamaño</label>
+                        <select id="azure-image-size-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-bold text-white">
+                            <option value="1024x1536">📱 Vertical 9:16 (1024x1536)</option>
+                            <option value="1024x1024">🟦 Cuadrada 1:1 (1024x1024)</option>
+                            <option value="1536x1024">🖥️ Horizontal 16:9 (1536x1024)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="azure-image-status-box" class="hidden text-xs font-bold text-sky-300 bg-sky-500/10 border border-sky-500/30 rounded-xl p-3"></div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                <button type="button" onclick="closeAzureImageModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Cancelar</button>
+                <button type="button" id="btn-generate-azure-image" onclick="generateImageWithAzure()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs font-black shadow-lg">
+                    🎨 Generar y Aplicar a Escena
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULAR STUDIO SCRIPTS (EXACT DEPENDENCY ORDER) -->
+    <script src="/js/templates-data.js"></script>
+    <script src="/js/audio-engine.js"></script>
+    <script src="/js/stage-graphics.js"></script>
+    <script src="/js/stage-renderer.js"></script>
+    <script src="/js/timeline-editor.js"></script>
+    <script src="/js/recording-export.js"></script>
+    <script src="/js/ai-services.js"></script>
+    <script src="/js/auth-cloud.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

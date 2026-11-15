@@ -1,0 +1,13 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Node modules
+node_modules/
+
+# Local drafts and media
+viral_en_1_clic_studio_pro*.html
+scratch/
+EJemplos De otro videos/
+*.log

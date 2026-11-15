@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/studio", "destination": "/studio.html" },
+    { "source": "/editor", "destination": "/studio.html" },
+    { "source": "/app", "destination": "/studio.html" },
+    { "source": "/render", "destination": "/render.html" }
+  ]
+}
+

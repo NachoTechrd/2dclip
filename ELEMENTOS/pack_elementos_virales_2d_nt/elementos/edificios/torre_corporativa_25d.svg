@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="towerGlow" cx="50%" cy="45%" r="52%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glassLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+    <linearGradient id="glassRight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="towerDrop" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="8" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="176" fill="url(#towerGlow)"/>
+  <ellipse cx="200" cy="364" rx="140" ry="16" fill="#020617" opacity="0.55"/>
+
+  <g filter="url(#towerDrop)">
+    <!-- Spire -->
+    <line x1="200" y1="24" x2="200" y2="70" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="200" cy="22" r="6" fill="#ef4444">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="1.2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Main 2.5D Isometric Glass Faces -->
+    <polygon points="200,56 102,102 102,344 200,362" fill="url(#glassLeft)" stroke="#0f172a" stroke-width="4" stroke-linejoin="round"/>
+    <polygon points="200,56 298,102 298,344 200,362" fill="url(#glassRight)" stroke="#0f172a" stroke-width="4" stroke-linejoin="round"/>
+
+    <!-- Window Grid Floors -->
+    <g stroke="#bae6fd" stroke-width="3" opacity="0.72">
+      <line x1="116" y1="126" x2="188" y2="108"/>
+      <line x1="116" y1="164" x2="188" y2="148"/>
+      <line x1="116" y1="202" x2="188" y2="188"/>
+      <line x1="116" y1="240" x2="188" y2="228"/>
+      <line x1="116" y1="278" x2="188" y2="268"/>
+      <line x1="116" y1="316" x2="188" y2="308"/>
+    </g>
+    <g stroke="#38bdf8" stroke-width="3" opacity="0.45">
+      <line x1="212" y1="108" x2="284" y2="126"/>
+      <line x1="212" y1="148" x2="284" y2="164"/>
+      <line x1="212" y1="188" x2="284" y2="202"/>
+      <line x1="212" y1="228" x2="284" y2="240"/>
+      <line x1="212" y1="268" x2="284" y2="278"/>
+      <line x1="212" y1="308" x2="284" y2="316"/>
+    </g>
+
+    <!-- Glowing Top Logo Crown -->
+    <polygon points="200,56 154,78 200,98 246,78" fill="#facc15" stroke="#0f172a" stroke-width="3"/>
+  </g>
+</svg>

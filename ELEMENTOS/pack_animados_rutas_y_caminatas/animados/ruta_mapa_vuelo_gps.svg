@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 260" width="100%" height="100%">
+  <defs>
+    <linearGradient id="mapBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="gpsGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect x="12" y="12" width="396" height="236" rx="22" fill="url(#mapBg)" stroke="#38bdf8" stroke-width="4"/>
+  <!-- Map Grid -->
+  <g stroke="#334155" stroke-width="1.2" opacity="0.5">
+    <line x1="80" y1="12" x2="80" y2="248"/><line x1="160" y1="12" x2="160" y2="248"/>
+    <line x1="240" y1="12" x2="240" y2="248"/><line x1="320" y1="12" x2="320" y2="248"/>
+    <line x1="12" y1="70" x2="408" y2="70"/><line x1="12" y1="130" x2="408" y2="130"/>
+    <line x1="12" y1="190" x2="408" y2="190"/>
+  </g>
+
+  <!-- Glowing Flight Arc -->
+  <path id="flightArc" d="M68,186 Q210,36 352,146" fill="none" stroke="#facc15" stroke-width="5" stroke-dasharray="10 8" filter="url(#gpsGlow)"/>
+
+  <!-- Origin Pin -->
+  <circle cx="68" cy="186" r="11" fill="#38bdf8" stroke="#ffffff" stroke-width="3"/>
+  <!-- Destination Pulse Pin -->
+  <circle cx="352" cy="146" r="14" fill="#10b981" opacity="0.35">
+    <animate attributeName="r" values="10;26;10" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="352" cy="146" r="10" fill="#10b981" stroke="#ffffff" stroke-width="3"/>
+
+  <!-- Animated Plane -->
+  <g filter="url(#gpsGlow)">
+    <polygon points="-14,-8 18,0 -14,8 -7,0" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+    <animateMotion dur="3.4s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#flightArc"/>
+    </animateMotion>
+  </g>
+</svg>

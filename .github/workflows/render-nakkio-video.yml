@@ -1,0 +1,64 @@
+name: Render NAKKIO Video 2DClip PRO
+
+on:
+  repository_dispatch:
+    types: [render-nakkio-video]
+  workflow_dispatch:
+    inputs:
+      payload_json:
+        description: 'JSON completo del job de renderizado'
+        required: true
+        type: string
+
+jobs:
+  render-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout 2DClip Studio
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (sin alterar package.json de Vercel)
+        run: |
+          npm ci --omit=dev
+          npm install --no-save playwright
+
+      - name: Cache Playwright Chromium
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Chromium & FFmpeg
+        run: |
+          npx playwright install chromium
+          npx playwright install-deps chromium
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Guardar payload de renderizado
+        id: write-payload
+        env:
+          DISPATCH_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+          MANUAL_PAYLOAD: ${{ github.event.inputs.payload_json }}
+        run: |
+          PAYLOAD_FILE="${RUNNER_TEMP}/render-payload.json"
+          if [ -n "$MANUAL_PAYLOAD" ]; then
+            printf '%s' "$MANUAL_PAYLOAD" > "$PAYLOAD_FILE"
+          else
+            printf '%s' "$DISPATCH_PAYLOAD" > "$PAYLOAD_FILE"
+          fi
+          echo "path=$PAYLOAD_FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Ejecutar renderizado 1080p y callback a NAKKIO
+        env:
+          WORKER_PAYLOAD_FILE: ${{ steps.write-payload.outputs.path }}
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          VIDEO_WORKER_SECRET: ${{ secrets.VIDEO_WORKER_SECRET }}
+        run: node scripts/render-worker.mjs
+

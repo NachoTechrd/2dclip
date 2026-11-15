@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" width="100%" height="100%">
+  <defs>
+    <linearGradient id="walkJacket" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <filter id="walkDrop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="5" flood-color="#020617" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="120" cy="296" rx="58" ry="11" fill="#020617" opacity="0.45">
+    <animate attributeName="rx" values="54;64;54" dur="0.7s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <g filter="url(#walkDrop)">
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-7; 0,0" dur="0.35s" repeatCount="indefinite"/>
+
+    <!-- Back Arm -->
+    <path d="M120,126 L84,186" stroke="#1e40af" stroke-width="18" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="rotate" values="-22 120 126; 22 120 126; -22 120 126" dur="0.7s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Back Leg -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="24 120 198; -24 120 198; 24 120 198" dur="0.7s" repeatCount="indefinite"/>
+      <path d="M114,198 L104,274" stroke="#0f172a" stroke-width="22" stroke-linecap="round"/>
+      <ellipse cx="114" cy="282" rx="18" ry="9" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+    </g>
+
+    <!-- Front Leg -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="-24 120 198; 24 120 198; -24 120 198" dur="0.7s" repeatCount="indefinite"/>
+      <path d="M124,198 L134,274" stroke="#1e293b" stroke-width="22" stroke-linecap="round"/>
+      <ellipse cx="144" cy="282" rx="18" ry="9" fill="#fbbf24" stroke="#0f172a" stroke-width="3"/>
+    </g>
+
+    <!-- Torso -->
+    <rect x="94" y="114" width="52" height="92" rx="22" fill="url(#walkJacket)" stroke="#0f172a" stroke-width="4.5"/>
+
+    <!-- Head -->
+    <circle cx="122" cy="74" r="32" fill="#fed7aa" stroke="#0f172a" stroke-width="4.5"/>
+    <path d="M92,66 C94,40 144,36 152,64 C138,52 108,54 92,66 Z" fill="#0f172a"/>
+    <circle cx="136" cy="74" r="4" fill="#0f172a"/>
+    <path d="M130,88 Q140,92 146,84" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Front Arm -->
+    <path d="M120,128 L154,184" stroke="#60a5fa" stroke-width="18" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="rotate" values="24 120 128; -24 120 128; 24 120 128" dur="0.7s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

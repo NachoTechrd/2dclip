@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Studio 2D - Tu IA Hace el Video Viral por $19</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #060913;
+            color: #f1f5f9;
+        }
+
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glow-radial-orange {
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.25) 0%, rgba(6, 9, 19, 0) 70%);
+        }
+
+        .glow-radial-cyan {
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, rgba(6, 9, 19, 0) 70%);
+        }
+
+        .glow-radial-purple {
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.22) 0%, rgba(6, 9, 19, 0) 70%);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+        }
+
+        .hero-badge-pulse {
+            animation: badgePulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+            }
+
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+            }
+        }
+
+        .floating-actor {
+            animation: actorHover 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes actorHover {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-10px) rotate(1.5deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="selection:bg-amber-500 selection:text-slate-950 overflow-x-hidden">
+
+    <!-- TOP ANNOUNCEMENT BANNER -->
+    <div
+        class="bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-slate-950 px-4 py-2 text-center text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-lg">
+        <span class="bg-slate-950 text-amber-300 text-[10px] uppercase px-2 py-0.5 rounded-full font-mono-code">Oferta
+            de Lanzamiento</span>
+        <span>🔥 Llévate la carpeta completa del sistema por solo <strong>$19 USD</strong> (Antes $97 USD) · Un solo
+            pago de por vida.</span>
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 bg-[#060913]/85 backdrop-blur-xl border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2.5">
+                <div
+                    class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-orange-500/30">
+                    ⚡
+                </div>
+                <div>
+                    <span class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+                        VIRAL STUDIO <span
+                            class="text-amber-400 font-mono-code text-xs px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30">2D
+                            PRO</span>
+                    </span>
+                    <p class="text-[10px] text-slate-400 font-bold -mt-1">Tu IA hace los videos virales</p>
+                </div>
+            </a>
+
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex items-center gap-7 text-xs font-bold text-slate-300">
+                <a href="#como-funciona" class="hover:text-amber-400 transition">Cómo Funciona</a>
+                <a href="#subtitulos" class="hover:text-amber-400 transition">Subtítulos Virales</a>
+                <a href="#que-incluye" class="hover:text-amber-400 transition">¿Qué Incluye?</a>
+                <a href="#precios" class="hover:text-amber-400 transition">Precio</a>
+                <a href="#faq" class="hover:text-amber-400 transition">Preguntas</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2.5">
+                <button onclick="openLoginModal()"
+                    class="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-black flex items-center gap-1.5 transition">
+                    <span>🔑</span> Iniciar Sesión
+                </button>
+                <a href="#precios"
+                    class="hero-badge-pulse px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-lg shadow-orange-500/30 transition transform hover:scale-105">
+                    <span>⚡</span> Comprar por $19
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-12 pb-20 sm:pt-20 sm:pb-28 overflow-hidden">
+        <!-- Glow Orbs -->
+        <div
+            class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] glow-radial-orange pointer-events-none -z-10">
+        </div>
+        <div class="absolute top-10 left-10 w-[450px] h-[450px] glow-radial-cyan pointer-events-none -z-10"></div>
+        <div class="absolute bottom-10 right-10 w-[450px] h-[450px] glow-radial-purple pointer-events-none -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center space-y-7">
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-amber-500/40 text-amber-300 text-xs font-black shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span>EL SISTEMA DETRÁS DE MILLONES DE VISTAS EN TIKTOK Y REELS</span>
+            </div>
+
+            <!-- Big Title -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight max-w-5xl mx-auto leading-[1.08]">
+                Tu IA hace el video viral. <br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 text-glow">
+                    Tú solo lo subes a tus redes.
+                </span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed">
+                Escribe un tema en una frase y recibe un reel terminado: <strong>guion con ortografía y tildes
+                    perfectas, ilustraciones vectoriales 2D, animaciones cinemáticas y subtítulos virales
+                    sincronizados</strong>. Sin grabarte, sin editar y sin saber programar.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-3">
+                <a href="#precios"
+                    class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-2xl shadow-orange-500/40 transition transform hover:scale-105">
+                    <span>⚡</span> Quiero el Sistema Completo · Solo $19 USD
+                </a>
+                <button onclick="openLoginModal()"
+                    class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700 font-extrabold text-sm flex items-center justify-center gap-2 transition">
+                    <span>🔑</span> Ya compré / Acceso al Editor
+                </button>
+            </div>
+
+            <!-- Trust Pills -->
+            <div
+                class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-4 text-xs font-bold text-slate-400">
+                <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> No es suscripción
+                    mensual</span>
+                <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Código fuente
+                    descargable</span>
+                <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Graba directo en iPhone
+                    y PC</span>
+                <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Formatos 9:16, 1:1, 16:9
+                    y 4:5</span>
+            </div>
+
+            <!-- INTERACTIVE MOCKUP SHOWCASE (ATOM STYLE) -->
+            <div class="pt-10 max-w-5xl mx-auto">
+                <div
+                    class="bg-[#0b101d] border-2 border-slate-800 rounded-3xl p-4 sm:p-7 shadow-2xl relative overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+
+                    <!-- Left: ATOM AI Chat & Progress Checklist -->
+                    <div class="lg:col-span-6 text-left space-y-4">
+                        <div class="flex items-center gap-2 text-xs font-black text-amber-400">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>MOTOR DE GENERACIÓN VIRAL ACTIVO</span>
+                        </div>
+
+                        <!-- Chat prompt bubble -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1.5 shadow-inner">
+                            <span class="text-[11px] font-extrabold uppercase text-slate-400">Tu indicación en 1
+                                frase:</span>
+                            <p class="text-sm font-black text-white">
+                                "¿Por qué se afloja una tuerca aunque la aprietes con todas tus fuerzas?"
+                            </p>
+                        </div>
+
+                        <!-- Live Automated Checklist -->
+                        <div
+                            class="bg-black/60 border border-slate-800/90 rounded-2xl p-4 space-y-2.5 text-xs font-bold">
+                            <div class="text-emerald-400 flex items-center gap-2">
+                                <span>✓</span> Investigando el principio físico y creando el gancho contraintuitivo
+                            </div>
+                            <div class="text-emerald-400 flex items-center gap-2">
+                                <span>✓</span> Escribiendo guion con perfecta ortografía y tildes en español
+                            </div>
+                            <div class="text-emerald-400 flex items-center gap-2">
+                                <span>✓</span> Asignando escenarios 2D e ilustraciones vectoriales animadas
+                            </div>
+                            <div class="text-emerald-400 flex items-center gap-2">
+                                <span>✓</span> Sincronizando subtítulos palabra por palabra (Estilo MrBeast / TikTok)
+                            </div>
+                            <div class="text-amber-400 flex items-center gap-2">
+                                <span class="animate-spin">⚙️</span> Video final listo para grabar en 1080x1920 60fps
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
+                            <span class="font-mono-code text-cyan-300">tuerca.mp4 · 21.5s · 9:16</span>
+                            <span class="text-emerald-400 font-extrabold">+90.000 Vistas Estimadas</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Vertical Phone Mockup Preview -->
+                    <div class="lg:col-span-6 flex justify-center">
+                        <div
+                            class="w-[280px] sm:w-[310px] h-[520px] bg-slate-950 rounded-[40px] p-3 border-[4px] border-slate-700 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+                            <!-- Dynamic Screen Interior -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-[#180a0a] via-[#090b14] to-[#120718] flex flex-col justify-between p-4">
+
+                                <!-- Top Bar -->
+                                <div
+                                    class="flex items-center justify-between text-[10px] font-bold text-white/80 z-10 pt-1">
+                                    <span
+                                        class="bg-black/60 px-2 py-0.5 rounded-full border border-white/20">@nachotorresrd</span>
+                                    <span class="text-amber-400 font-mono-code">1080x1920</span>
+                                </div>
+
+                                <!-- Center Headline Hook -->
+                                <div class="text-center space-y-1 z-10 pt-4">
+                                    <span
+                                        class="text-[10px] font-black uppercase tracking-wider text-slate-300 bg-black/60 px-2 py-0.5 rounded">¿SABÍAS
+                                        ESTO?</span>
+                                    <h3 class="text-lg sm:text-xl font-black text-amber-300 leading-tight uppercase">
+                                        TU TUERCA SE AFLOJA SOLA
+                                    </h3>
+                                </div>
+
+                                <!-- Center Animated Vector Actor -->
+                                <div class="flex-1 flex items-center justify-center relative">
+                                    <!-- Rotating Sunburst Effect -->
+                                    <div
+                                        class="w-36 h-36 rounded-full bg-gradient-to-tr from-amber-500/20 to-rose-500/20 animate-pulse blur-xl absolute">
+                                    </div>
+
+                                    <!-- Vector Nut / Bolt Illustration -->
+                                    <div class="floating-actor relative z-10 text-center">
+                                        <svg class="w-24 h-24 mx-auto text-amber-400 filter drop-shadow-[0_0_15px_rgba(245,158,11,0.6)]"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" fill="rgba(245,158,11,0.2)" />
+                                            <circle cx="12" cy="12" r="4" fill="#000" stroke="currentColor"
+                                                stroke-width="2" />
+                                        </svg>
+                                        <span
+                                            class="inline-block mt-2 text-[10px] font-extrabold bg-red-600 text-white px-2.5 py-0.5 rounded-full shadow-lg">
+                                            VIBRACIÓN OCULTA
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom Subtitles Box (MrBeast / TikTok Green Style) -->
+                                <div
+                                    class="bg-black/90 border border-slate-700 rounded-2xl p-2.5 text-center space-y-1.5 z-10 shadow-2xl">
+                                    <p class="text-[11px] font-bold text-slate-300 leading-relaxed">
+                                        Aunque la aprietes con fuerza, las micropulsaciones <span
+                                            class="bg-[#22c55e] text-black font-black px-1.5 py-0.5 rounded shadow">la
+                                            desenroscan</span> en segundos.
+                                    </p>
+                                    <div
+                                        class="flex items-center justify-between text-[9px] text-slate-400 border-t border-slate-800 pt-1">
+                                        <span class="text-amber-400 font-bold">🔊 SFX Pop + Bass</span>
+                                        <span class="text-emerald-400 font-bold">TikTok Green Subtitle</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION: HOW IT WORKS IN 3 STEPS -->
+    <section id="como-funciona" class="py-20 bg-[#090d19] border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center space-y-3 mb-14">
+                <span class="text-amber-400 text-xs font-black uppercase tracking-widest font-mono-code">FLUJO ULTRA
+                    RÁPIDO</span>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">De una simple idea a un video viral en 3 pasos
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Sin curvas de aprendizaje difíciles ni
+                    programas pesados de edición.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Step 1 -->
+                <div
+                    class="bg-[#0e1424] border border-slate-800 p-6 sm:p-8 rounded-3xl space-y-4 hover:border-amber-500/40 transition">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl font-black font-mono-code">
+                        01
+                    </div>
+                    <h3 class="text-xl font-black text-white">Escribe tu tema en 1 frase</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Introduce la duda, el problema o la oferta que quieres vender. Puedes usar el botón de ideas
+                        rápidas (negocios, curiosidad, WhatsApp IA, mitos).
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                    class="bg-[#0e1424] border border-slate-800 p-6 sm:p-8 rounded-3xl space-y-4 hover:border-orange-500/40 transition">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xl font-black font-mono-code">
+                        02
+                    </div>
+                    <h3 class="text-xl font-black text-white">Gemini IA genera el reel</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Crea el guion con gancho de 3 segundos, redacta con ortografía impecable, sincroniza los
+                        subtítulos palabra por palabra y le asigna animaciones 3D.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                    class="bg-[#0e1424] border border-slate-800 p-6 sm:p-8 rounded-3xl space-y-4 hover:border-emerald-500/40 transition">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl font-black font-mono-code">
+                        03
+                    </div>
+                    <h3 class="text-xl font-black text-white">Graba y súbelo a tus redes</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Elige tu formato (9:16 para TikTok/Reels, 1:1 para feed, 16:9 para YouTube o 4:5), graba desde
+                        tu iPhone o PC sin botones estorbando y publica.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: 9 VIRAL SUBTITLE STYLES -->
+    <section id="subtitulos" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center space-y-3 mb-14">
+                <span class="text-cyan-400 text-xs font-black uppercase tracking-widest font-mono-code">MÁXIMA RETENCIÓN
+                    DE ATENCIÓN</span>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">9 Estilos de Subtítulos de Alto Impacto</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                    Los subtítulos son los responsables del 80% de la retención en redes. Elige el estilo perfecto para
+                    tu nicho con 1 clic:
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Style 1 -->
+                <div class="bg-[#0b101c] border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-emerald-400">01. TikTok Green Pop</span>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">Ultra
+                            Viral</span>
+                    </div>
+                    <div class="bg-black p-4 rounded-xl text-center text-sm font-black">
+                        Aprende a <span
+                            class="bg-black text-[#22c55e] border-2 border-[#22c55e] px-2 py-0.5 rounded-lg shadow-[0_0_15px_rgba(34,197,94,0.8)] inline-block transform -rotate-2">VENDER
+                            MÁS</span> cada día.
+                    </div>
+                </div>
+
+                <!-- Style 2 -->
+                <div class="bg-[#0b101c] border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-red-400">02. MrBeast Explosivo</span>
+                        <span class="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded font-bold">Impacto
+                            Alto</span>
+                    </div>
+                    <div class="bg-black p-4 rounded-xl text-center text-sm font-black">
+                        El secreto que <span
+                            class="bg-red-600 text-yellow-300 border-2 border-white px-2.5 py-0.5 rounded-xl shadow-lg inline-block transform rotate-1">NADIE
+                            TE DIJO</span> sobre esto.
+                    </div>
+                </div>
+
+                <!-- Style 3 -->
+                <div class="bg-[#0b101c] border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-white">03. Píldora Blanca Minimal</span>
+                        <span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded font-bold">Tech &
+                            Negocios</span>
+                    </div>
+                    <div class="bg-black p-4 rounded-xl text-center text-sm font-black">
+                        Automatiza tu negocio <span
+                            class="bg-white text-slate-950 px-3 py-0.5 rounded-full shadow-lg inline-block">EN 24
+                            HORAS</span> fácil.
+                    </div>
+                </div>
+
+                <!-- Style 4 -->
+                <div class="bg-[#0b101c] border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-amber-400">04. Amarillo Atom</span>
+                        <span
+                            class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold">Curiosidad</span>
+                    </div>
+                    <div class="bg-black p-4 rounded-xl text-center text-sm font-black">
+                        Mira por qué tu mente <span
+                            class="bg-amber-400 text-slate-950 px-2 py-0.5 rounded-lg shadow-md inline-block">TE
+                            ENGAÑA</span> siempre.
+                    </div>
+                </div>
+
+                <!-- Style 5 -->
+                <div class="bg-[#0b101c] border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-blue-400">05. Caja Hormozi Vectorial</span>
+                        <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded font-bold">Ofertas
+                            $100M</span>
+                    </div>
+                    <div class="bg-black p-4 rounded-xl text-center text-sm font-black">
+                        Cómo crear una <span
+                            class="border-2 border-cyan-400 text-cyan-300 px-2 py-0.5 rounded bg-cyan-950/70 inline-block font-mono-code">[OFERTA
+                            IRRESISTIBLE]</span> hoy.
+                    </div>
+                </div>
+
+                <!-- Style 6 -->
+                <div class="bg-[#0b101c] border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-rose-400">06. Alerta Roja Peligro</span>
+                        <span class="text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded font-bold">Alerta &
+                            Mitos</span>
+                    </div>
+                    <div class="bg-black p-4 rounded-xl text-center text-sm font-black">
+                        El error que te está <span
+                            class="bg-rose-600 text-white px-2 py-0.5 rounded shadow-[0_0_20px_rgba(225,29,72,0.9)] inline-block">COSTANDO
+                            MILES</span> al mes.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: WHAT'S INSIDE THE $19 FOLDER -->
+    <section id="que-incluye" class="py-20 bg-[#090d19] border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center space-y-3 mb-14">
+                <span class="text-amber-400 text-xs font-black uppercase tracking-widest font-mono-code">ACCESO COMPLETO
+                    AL CÓDIGO FUENTE</span>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Todo lo que recibes en la carpeta por $19 USD
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Sin suscripciones escondidas. Todo el
+                    sistema es tuyo para siempre.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="bg-[#0e1424] border border-slate-800 p-6 rounded-2xl space-y-2.5">
+                    <span class="text-3xl">✨</span>
+                    <h3 class="text-lg font-black text-white">Integración Nativa con Google Gemini</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Conexión directa con Gemini 2.0 y 1.5 Flash.
+                        Escribe guiones estructurados con perfecta gramática española y acentos sin que tengas que
+                        corregir nada.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-[#0e1424] border border-slate-800 p-6 rounded-2xl space-y-2.5">
+                    <span class="text-3xl">🎨</span>
+                    <h3 class="text-lg font-black text-white">20 Actores e Ilustraciones SVG</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Puertas dimensionales, cerebros y sinapsis, lluvia
+                        de dinero, radar táctico, chat en vivo de WhatsApp simulado, caja registradora POS y más.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-[#0e1424] border border-slate-800 p-6 rounded-2xl space-y-2.5">
+                    <span class="text-3xl">🎬</span>
+                    <h3 class="text-lg font-black text-white">Cámara Cinemática 3D</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Movimientos de cámara que enganchan: Push-in 3D
+                        dinámico, Dutch Tilt inclinado, Snap Zoom en el momento clave y Whip Pan con desenfoque de
+                        movimiento.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-[#0e1424] border border-slate-800 p-6 rounded-2xl space-y-2.5">
+                    <span class="text-3xl">📱</span>
+                    <h3 class="text-lg font-black text-white">Multi-Formato & Modo iPhone</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Elige entre 9:16 (TikTok/Reels), 1:1 (Post), 16:9
+                        (YouTube) y 4:5. Incluye el modo de pantalla limpia OLED para grabar en iPhone a 1080x1920
+                        60fps.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-[#0e1424] border border-slate-800 p-6 rounded-2xl space-y-2.5">
+                    <span class="text-3xl">🗣️</span>
+                    <h3 class="text-lg font-black text-white">Estudio de Voces & SFX</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Soporte para voces de ElevenLabs y Google Cloud
+                        Chirp 3 HD, grabador de micrófono por escena, subida de archivos .MP3 y colchón musical
+                        ambiental BGM sintetizado.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-[#0e1424] border border-slate-800 p-6 rounded-2xl space-y-2.5">
+                    <span class="text-3xl">🚀</span>
+                    <h3 class="text-lg font-black text-white">Despliegue Gratis en Vercel</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Listo para abrir en tu navegador sin instalar
+                        nada, o subirlo a tu propio GitHub y desplegarlo en Vercel en 1 solo clic con hosting gratis de
+                        por vida.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: PRICING CARD -->
+    <section id="precios" class="py-24 relative overflow-hidden">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] glow-radial-orange pointer-events-none -z-10">
+        </div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div
+                class="bg-[#0b101e] border-2 border-amber-500/70 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden space-y-8">
+
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-6">
+                    <div>
+                        <span
+                            class="text-xs font-black uppercase tracking-wider text-amber-400 font-mono-code bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30">
+                            LICENCIA DE POR VIDA
+                        </span>
+                        <h2 class="text-2xl sm:text-4xl font-black text-white mt-2">
+                            Viral Studio Pro 2D + Carpeta Completa
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-400">Acceso inmediato al editor y descarga de todos los
+                            archivos.</p>
+                    </div>
+
+                    <div class="text-right">
+                        <span class="text-sm font-extrabold text-slate-500 line-through">$97 USD</span>
+                        <div class="text-4xl sm:text-5xl font-black text-amber-400 font-mono-code">$19 <span
+                                class="text-sm font-bold text-slate-400">USD</span></div>
+                        <span class="text-[10px] text-emerald-400 font-bold">Pago único · Sin mensualidades</span>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-bold text-slate-200">
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> Carpeta
+                        descargable con código fuente completo</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> Conexión
+                        Gemini IA (1 frase ➔ video)</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> 9 Estilos de
+                        subtítulos virales activos</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> 20 Actores
+                        vectoriales y fondos SVG</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> Grabación
+                        limpia en iPhone y PC en 4 formatos</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> Sintetizador
+                        BGM y efectos SFX integrados</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span> Guía de
+                        despliegue en Vercel paso a paso</div>
+                    <div class="flex items-center gap-2"><span class="text-emerald-400 font-black">✓</span>
+                        Actualizaciones y soporte para siempre</div>
+                </div>
+
+                <!-- Payment CTA -->
+                <div class="space-y-3 pt-2">
+                    <button onclick="openCheckoutModal()"
+                        class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-base sm:text-lg uppercase tracking-wide flex items-center justify-center gap-2 shadow-2xl shadow-orange-500/40 transition transform hover:scale-[1.02]">
+                        <span>💳</span> Comprar Ahora por $19 USD (Acceso Inmediato)
+                    </button>
+                    <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 px-2">
+                        <span>🔒 Pago Seguro y Encriptado</span>
+                        <button onclick="openLoginModal()" class="text-cyan-400 font-extrabold hover:underline">
+                            ¿Ya tienes tu cuenta? Iniciar Sesión ➔
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: FAQ -->
+    <section id="faq" class="py-20 bg-[#090d19] border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
+            <div class="text-center space-y-2 mb-10">
+                <h2 class="text-3xl font-black text-white">Preguntas Frecuentes</h2>
+                <p class="text-sm text-slate-400">Todo lo que necesitas saber antes de comprar.</p>
+            </div>
+
+            <div class="space-y-4">
+                <details class="bg-[#0e1424] border border-slate-800 rounded-2xl p-4 sm:p-5 group">
+                    <summary
+                        class="font-extrabold text-sm sm:text-base text-white cursor-pointer flex items-center justify-between">
+                        <span>¿Necesito saber programar o editar videos para usarlo?</span>
+                        <span class="text-amber-400 font-mono-code text-xl group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+                        Para nada. El sistema corre directamente en tu navegador web. Solo escribes una frase con el
+                        tema de tu video y la IA se encarga del guion, las ilustraciones, el movimiento de cámara y los
+                        subtítulos.
+                    </p>
+                </details>
+
+                <details class="bg-[#0e1424] border border-slate-800 rounded-2xl p-4 sm:p-5 group">
+                    <summary
+                        class="font-extrabold text-sm sm:text-base text-white cursor-pointer flex items-center justify-between">
+                        <span>¿Es un solo pago de $19 o hay pagos mensuales?</span>
+                        <span class="text-amber-400 font-mono-code text-xl group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+                        Es un único pago de $19 USD. Te quedas con la carpeta y el código fuente completo para siempre,
+                        sin suscripciones ni mensualidades sorpresa.
+                    </p>
+                </details>
+
+                <details class="bg-[#0e1424] border border-slate-800 rounded-2xl p-4 sm:p-5 group">
+                    <summary
+                        class="font-extrabold text-sm sm:text-base text-white cursor-pointer flex items-center justify-between">
+                        <span>¿Cómo grabo los videos en mi iPhone o celular?</span>
+                        <span class="text-amber-400 font-mono-code text-xl group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+                        El sistema incluye un botón dedicado llamado "Grabar en iPhone" que prepara la pantalla en negro
+                        puro OLED, te da una cuenta regresiva 3-2-1 y te permite usar la Grabación de Pantalla nativa de
+                        iOS sin botones que tapen tu video en calidad 1080x1920 60fps.
+                    </p>
+                </details>
+
+                <details class="bg-[#0e1424] border border-slate-800 rounded-2xl p-4 sm:p-5 group">
+                    <summary
+                        class="font-extrabold text-sm sm:text-base text-white cursor-pointer flex items-center justify-between">
+                        <span>¿Puedo poner mi propia marca, logo y colores?</span>
+                        <span class="text-amber-400 font-mono-code text-xl group-open:rotate-45 transition">+</span>
+                    </summary>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+                        Totalmente. En la barra superior puedes cambiar tu usuario de redes (@tuusuario), tu dominio web
+                        (tuweb.com), tu llamada a la acción y personalizar cada una de las 5 escenas.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 bg-[#060913] border-t border-slate-800 text-center text-xs space-y-4">
+        <div class="flex flex-wrap items-center justify-center gap-5 text-sm font-extrabold">
+            <a href="https://wa.me/18093408435" target="_blank"
+                class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition">
+                <span>💬</span> WhatsApp: +1 (809) 340-8435
+            </a>
+            <span class="text-slate-700">•</span>
+            <a href="https://instagram.com/nachotorresrd" target="_blank"
+                class="text-pink-400 hover:text-pink-300 flex items-center gap-1.5 transition">
+                <span>📸</span> Instagram: @nachotorresrd
+            </a>
+            <span class="text-slate-700">•</span>
+            <span class="text-slate-400">⚡ Soporte VIP en Vivo</span>
+        </div>
+        <p class="text-slate-500">Desarrollado por Nacho Torres · NachoTechRD · © 2026 Viral Studio 2D. Todos los
+            derechos reservados.</p>
+    </footer>
+
+    <!-- FLOATING WHATSAPP PILL BUTTON -->
+    <a href="https://wa.me/18093408435?text=Hola%20Nacho%2C%20tengo%20una%20pregunta%20sobre%20el%20sistema%20Viral%20Studio%202D"
+        target="_blank"
+        class="fixed bottom-5 right-5 z-40 bg-[#25D366] hover:bg-[#20ba5a] text-slate-950 font-black px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 transition transform hover:scale-105 border-2 border-white/40 text-xs sm:text-sm"
+        title="Escríbeme por WhatsApp: 809-340-8435">
+        <span class="text-xl">💬</span>
+        <span class="hidden sm:inline">WhatsApp: <strong>809-340-8435</strong></span>
+        <span class="sm:hidden font-extrabold">WhatsApp</span>
+    </a>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 1: LOGIN / REGISTRO EN STUDIO -->
+    <!-- ================================================================= -->
+    <div id="login-modal"
+        class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div
+            class="bg-[#0b101c] border-2 border-amber-500/60 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 font-black flex items-center justify-center">
+                        🔑</div>
+                    <div>
+                        <h3 id="landing-auth-title" class="text-base font-black text-white">Entrar a 2DClip Studio</h3>
+                        <p class="text-[11px] text-slate-400">Sincroniza proyectos, claves API y recursos en la nube</p>
+                    </div>
+                </div>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                <button type="button" id="landing-tab-login" onclick="setLandingAuthMode('login')"
+                    class="py-1.5 rounded-lg text-xs font-black bg-amber-500 text-slate-950 transition">Iniciar Sesión</button>
+                <button type="button" id="landing-tab-register" onclick="setLandingAuthMode('register')"
+                    class="py-1.5 rounded-lg text-xs font-black text-slate-400 hover:text-white transition">Crear Cuenta</button>
+            </div>
+
+            <form onsubmit="handleLandingLogin(event)" class="space-y-3 text-left">
+                <div id="landing-name-wrap" class="hidden">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">Tu Nombre / Marca:</label>
+                    <input id="login-name" type="text" placeholder="Ej. Nacho Tech"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">Correo Electrónico:</label>
+                    <input id="login-email" type="text" placeholder="tu@correo.com (o deja vacío si usas clave directa)"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-200 focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-300 mb-1">Contraseña o Clave de Acceso:</label>
+                    <input id="login-password" type="password" placeholder="Introduce tu contraseña..." required
+                        autofocus
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div id="login-error-msg"
+                    class="hidden text-xs font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30 rounded-xl p-2.5 text-center">
+                    ❌ Credenciales incorrectas. Verifica tu correo/contraseña o crea una cuenta nueva.
+                </div>
+
+                <button id="landing-auth-submit" type="submit"
+                    class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/30 transition">
+                    Entrar al Editor Pro ➔
+                </button>
+            </form>
+
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <a href="studio.html" class="text-slate-400 hover:text-white font-bold">Entrar como Invitado</a>
+                <a href="#precios" onclick="closeLoginModal()"
+                    class="text-amber-400 font-extrabold hover:underline">
+                    Licencia Pro ($19)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 2: CHECKOUT / BUY OPTIONS ($19 USD) -->
+    <!-- ================================================================= -->
+    <div id="checkout-modal"
+        class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div
+            class="bg-[#0b101c] border-2 border-emerald-500/60 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 rounded-xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center">
+                        💳</div>
+                    <div>
+                        <h3 class="text-base font-black text-white">Comprar Acceso Oficial</h3>
+                        <p class="text-[11px] text-emerald-400 font-bold">$19 USD · Licencia de por vida</p>
+                    </div>
+                </div>
+                <button onclick="closeCheckoutModal()"
+                    class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+
+            <p class="text-xs text-slate-300">
+                Elige tu método preferido para pagar los <strong>$19 USD</strong> y recibir de inmediato tu clave de
+                acceso y la carpeta completa:
+            </p>
+
+            <div class="space-y-2.5">
+                <!-- WhatsApp Direct Contact (Real Number) -->
+                <a href="https://wa.me/18093408435?text=Hola%20Nacho%2C%20quiero%20comprar%20el%20sistema%20Viral%20Studio%202D%20por%2019%20dolares"
+                    target="_blank"
+                    class="w-full p-3.5 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/50 flex items-center justify-between text-left transition group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">💬</span>
+                        <div>
+                            <div class="text-xs font-black text-emerald-300">Comprar por WhatsApp: 809-340-8435</div>
+                            <div class="text-[10px] text-slate-400">Respuesta inmediata · Transferencia / Tarjeta /
+                                PayPal</div>
+                        </div>
+                    </div>
+                    <span class="text-xs font-black text-emerald-400 group-hover:translate-x-1 transition">Chatear
+                        ➔</span>
+                </a>
+
+                <!-- Instagram DM Direct Contact -->
+                <a href="https://instagram.com/nachotorresrd" target="_blank"
+                    class="w-full p-3.5 rounded-2xl bg-gradient-to-r from-pink-600/20 via-purple-600/20 to-indigo-600/20 hover:from-pink-600/30 hover:to-indigo-600/30 border border-pink-500/40 flex items-center justify-between text-left transition group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">📸</span>
+                        <div>
+                            <div class="text-xs font-black text-pink-300">Comprar por Instagram: @nachotorresrd</div>
+                            <div class="text-[10px] text-slate-400">Escríbeme por mensaje directo (DM)</div>
+                        </div>
+                    </div>
+                    <span class="text-xs font-black text-pink-400 group-hover:translate-x-1 transition">Abrir DM
+                        ➔</span>
+                </a>
+
+                <!-- Card / Transfer Option via WhatsApp -->
+                <a href="https://wa.me/18093408435?text=Hola%20Nacho%2C%20quiero%20el%20enlace%20para%20pagar%20Viral%20Studio%202D%20(19%20USD)%20con%20Tarjeta%20o%20Transferencia"
+                    target="_blank"
+                    class="w-full p-3.5 rounded-2xl bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/40 flex items-center justify-between text-left transition group">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">💳</span>
+                        <div>
+                            <div class="text-xs font-black text-cyan-300">Pagar con Tarjeta o Transferencia</div>
+                            <div class="text-[10px] text-slate-400">Te envío el link de pago y acceso en 1 minuto</div>
+                        </div>
+                    </div>
+                    <span class="text-xs font-black text-cyan-400 group-hover:translate-x-1 transition">Pedir Link
+                        ➔</span>
+                </a>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 text-center">
+                <p class="text-[11px] text-slate-400">
+                    Tras el pago se te entregará tu usuario y contraseña personal para acceder a
+                    <strong>studio.html</strong>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT AUTHENTICATION LOGIC (CLOUD + LEGACY FALLBACK) -->
+    <script>
+        const AUTH_STORAGE_KEY = 'viral2d_auth_token';
+        const AUTH_TOKEN_VALID = 'auth_session_verified_2026';
+        let landingAuthMode = 'login';
+
+        const VALID_B64_TOKENS = ['Sm9zZSQxMjA0', 'am9zZSQxMjA0', 'Sm9zZTEyMDQ=', 'MTIwNA=='];
+        const VALID_HASH_TOKENS = [
+            '2f708bcbe134dc96f34c517977cffa0d7140087045d2647046b58b9a90b2ec8c',
+            'a443d873b54b3b944fd72f78296136c2de76fcb0eb5cb4c38cb35f2c06929877',
+            '4ace281311f0a9f1f6f59cdea26b605b4a857e32332e853ef5022c8e19e13f9e',
+            '0af7d7158becc6d02dc41536107090e77195cf90c556cadb37866528cc94e8a9',
+            'd5cd501dabed525888b48b2e703e3e0ba3f97fa292dc3da4180517d4ce9cf327'
+        ];
+
+        function isTokenValid(val) {
+            if (!val) return false;
+            const clean = val.trim();
+            try {
+                const b64 = btoa(clean);
+                if (VALID_B64_TOKENS.includes(b64)) return true;
+            } catch (e) { }
+            return false;
+        }
+
+        async function computeSHA256(str) {
+            try {
+                const buffer = new TextEncoder().encode(str);
+                const digest = await crypto.subtle.digest('SHA-256', buffer);
+                return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function setLandingAuthMode(mode) {
+            landingAuthMode = mode === 'register' ? 'register' : 'login';
+            const nameWrap = document.getElementById('landing-name-wrap');
+            const tabLogin = document.getElementById('landing-tab-login');
+            const tabReg = document.getElementById('landing-tab-register');
+            const submitBtn = document.getElementById('landing-auth-submit');
+            const errMsg = document.getElementById('login-error-msg');
+            if (errMsg) errMsg.classList.add('hidden');
+
+            if (landingAuthMode === 'register') {
+                if (nameWrap) nameWrap.classList.remove('hidden');
+                if (tabReg) tabReg.className = 'py-1.5 rounded-lg text-xs font-black bg-amber-500 text-slate-950 transition';
+                if (tabLogin) tabLogin.className = 'py-1.5 rounded-lg text-xs font-black text-slate-400 hover:text-white transition';
+                if (submitBtn) submitBtn.textContent = 'Crear Cuenta y Entrar ➔';
+            } else {
+                if (nameWrap) nameWrap.classList.add('hidden');
+                if (tabLogin) tabLogin.className = 'py-1.5 rounded-lg text-xs font-black bg-amber-500 text-slate-950 transition';
+                if (tabReg) tabReg.className = 'py-1.5 rounded-lg text-xs font-black text-slate-400 hover:text-white transition';
+                if (submitBtn) submitBtn.textContent = 'Entrar al Editor Pro ➔';
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function openCheckoutModal() {
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        async function handleLandingLogin(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const passInput = document.getElementById('login-password');
+            const emailInput = document.getElementById('login-email');
+            const nameInput = document.getElementById('login-name');
+            const errorMsg = document.getElementById('login-error-msg');
+            const submitBtn = document.getElementById('landing-auth-submit');
+
+            const pass = (passInput ? passInput.value : '').trim();
+            const email = (emailInput ? emailInput.value : '').trim().toLowerCase();
+            const name = (nameInput ? nameInput.value : '').trim();
+
+            if (errorMsg) errorMsg.classList.add('hidden');
+
+            // 1. Si hay correo electrónico, autenticar/registrar contra MongoDB Atlas (/api/auth)
+            if (email && email.includes('@')) {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Conectando con tu cuenta...';
+                }
+                try {
+                    const resp = await fetch(`/api/auth?action=${landingAuthMode}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password: pass, name })
+                    });
+                    const data = await resp.json();
+                    if (resp.ok && data.success && data.token) {
+                        localStorage.setItem('nt_cloud_token', data.token);
+                        localStorage.setItem('nt_cloud_user', JSON.stringify(data.user || {}));
+                        localStorage.setItem(AUTH_STORAGE_KEY, AUTH_TOKEN_VALID);
+                        window.location.href = 'studio.html';
+                        return;
+                    } else {
+                        if (errorMsg) {
+                            errorMsg.textContent = '❌ ' + (data.error || 'Error de autenticación');
+                            errorMsg.classList.remove('hidden');
+                        }
+                    }
+                } catch (err) {
+                    if (errorMsg) {
+                        errorMsg.textContent = '❌ Error de conexión con el servidor de cuentas.';
+                        errorMsg.classList.remove('hidden');
+                    }
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = landingAuthMode === 'register' ? 'Crear Cuenta y Entrar ➔' : 'Entrar al Editor Pro ➔';
+                    }
+                }
+                return;
+            }
+
+            // 2. Fallback: clave directa de licencia
+            let authorized = isTokenValid(pass) || isTokenValid(email);
+            if (!authorized) {
+                const hashPass = await computeSHA256(pass);
+                const hashPair = await computeSHA256(email + ':' + pass);
+                if (VALID_HASH_TOKENS.includes(hashPass) || VALID_HASH_TOKENS.includes(hashPair)) {
+                    authorized = true;
+                }
+            }
+
+            if (authorized) {
+                localStorage.setItem(AUTH_STORAGE_KEY, AUTH_TOKEN_VALID);
+                window.location.href = 'studio.html';
+            } else if (errorMsg) {
+                errorMsg.textContent = '❌ Introduce tu correo y contraseña (o tu clave de acceso directo).';
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        // Si el usuario ya inició sesión, mostrar acceso directo
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem(AUTH_STORAGE_KEY);
+            const cloudToken = localStorage.getItem('nt_cloud_token');
+            if (token === AUTH_TOKEN_VALID || cloudToken) {
+                const navActions = document.querySelector('header .flex.items-center');
+                if (navActions) {
+                    const btn = document.createElement('a');
+                    btn.href = 'studio.html';
+                    btn.className = 'px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-lg shadow-emerald-500/25 transition';
+                    btn.innerHTML = '<span>🎬</span> Ir al Studio Pro';
+                    navActions.appendChild(btn);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

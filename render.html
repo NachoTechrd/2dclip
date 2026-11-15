@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2DClip Headless Renderer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      overflow: hidden !important;
+      background: #050811 !important;
+    }
+    #headless-stage-root {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    #video-stage {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+    .nt-stage-text-editable {
+      outline: none !important;
+      cursor: default !important;
+    }
+  </style>
+  <script src="/assets_catalogo.js"></script>
+  <script src="/js/data-catalog-fallback.js"></script>
+</head>
+<body class="clean-record-mode">
+  <div id="headless-stage-root" class="stage-column">
+    <div id="video-stage" class="stage-wrapper aspect-9-16 hl-tiktok-green w-full flex flex-col justify-between p-4 sm:p-5 relative">
+      <!-- LAYER 1: DYNAMIC CAMERA RIG + SCENARIO BACKGROUND -->
+      <div id="camera-rig" class="scene-camera-layer">
+        <div id="environment-backdrop-layer" class="absolute inset-0 w-full h-full"></div>
+        <img id="custom-bg-image-layer" src="" alt="" crossorigin="anonymous" class="hidden absolute inset-0 w-full h-full object-cover opacity-85" />
+        <div class="sunburst"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-black/85 pointer-events-none"></div>
+        <div id="ambient-orbs-layer" class="absolute inset-0 pointer-events-none"></div>
+        <div id="vector-graphic-stage" class="absolute inset-0 flex items-center justify-center w-full h-full pt-14 pb-12"></div>
+      </div>
+
+      <!-- Floating Particles Layer -->
+      <div id="particles-layer" class="absolute inset-0 pointer-events-none overflow-hidden z-10"></div>
+
+      <!-- FLOATING REACTION EMOJI BADGE -->
+      <div id="stage-reaction-emoji" class="hidden"></div>
+
+      <!-- LAYER: DUAL IMAGE OVERLAY & PROPS -->
+      <div id="stage-props-layer" class="absolute inset-0 pointer-events-none overflow-hidden z-15">
+        <div id="stage-jail-bars" class="hidden jail-bars-overlay"></div>
+        <div id="stage-dual-overlay" class="overlay-dual-stage"></div>
+        <div id="stage-rubber-stamp" class="hidden rubber-stamp-slam select-none"></div>
+      </div>
+
+      <!-- STAGE BEAT FLASH OVERLAY -->
+      <div id="stage-beat-flash" class="absolute inset-0 pointer-events-none opacity-0 z-25" style="background: radial-gradient(circle at center, rgba(255,255,255,0.85) 0%, rgba(56,189,248,0.35) 45%, transparent 75%);"></div>
+
+      <!-- LAYER 2: TOP PROGRESS + GIANT HOOK HEADLINE -->
+      <div class="relative z-20 space-y-2">
+        <div id="scene-progress-bars" class="flex gap-1.5 w-full"></div>
+        <div class="flex items-center justify-between px-0.5 gap-2">
+          <span id="stage-top-domain" class="px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 backdrop-blur-md text-[10px] font-extrabold text-amber-300 font-mono-code tracking-tight truncate max-w-[56%]">
+            🌐 nakkio.com
+          </span>
+          <div class="flex items-center gap-1.5">
+            <img id="stage-brand-logo" src="" alt="" crossorigin="anonymous" class="hidden w-5 h-5 rounded-full object-cover border border-white/40 bg-white/90" />
+            <span id="stage-top-tag" class="px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-md text-[10px] font-black uppercase tracking-wider text-white">
+              @tienda
+            </span>
+          </div>
+        </div>
+
+        <div id="hook-banner-container" class="pt-0.5 text-center"></div>
+
+        <div id="subtitle-card-wrapper" class="pt-1 flex justify-center">
+          <div class="bg-black/80 backdrop-blur-md border border-white/20 rounded-2xl px-3.5 py-1.5 text-center shadow-2xl max-w-full">
+            <div id="subtitle-container" class="text-[17px] sm:text-[20px] font-black leading-[1.24] tracking-tight select-none"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYER 3: BOTTOM SAFE ZONE -->
+      <div class="relative z-20 mt-auto space-y-2 pb-0.5">
+        <div class="flex items-center justify-between gap-2 min-h-[36px]">
+          <div id="bottom-ribbon-container" class="flex-1"></div>
+          <div id="corner-timer-badge"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] font-extrabold text-white/80 pt-1.5 border-t border-white/15">
+          <div class="flex items-center gap-1.5">
+            <span id="brand-pulse-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span id="brand-watermark" class="tracking-wide">@tienda</span>
+          </div>
+          <span id="scene-counter-badge" class="px-2 py-0.5 rounded-md bg-black/55 text-white/95 font-mono-code text-[10px]">Escena 1/5</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Safe shims for editor-only globals invoked by stage-renderer.js -->
+  <script>
+    window.renderSceneTabsStrip = window.renderSceneTabsStrip || function () {};
+    window.saveStateToLocalStorage = window.saveStateToLocalStorage || function () {};
+    window.initStageInlineTextEditing = window.initStageInlineTextEditing || function () {};
+    window.animateLiveMoneyTicker = window.animateLiveMoneyTicker || function () {};
+    window.renderActiveSceneEditor = window.renderActiveSceneEditor || function () {};
+    window.getPropTransform = window.getPropTransform || function () { return { x: 0, y: 0, scale: 1 }; };
+  </script>
+  <script src="/js/templates-data.js"></script>
+  <script src="/js/audio-engine.js"></script>
+  <script src="/js/stage-graphics.js"></script>
+  <script src="/js/stage-renderer.js"></script>
+  <script src="/js/render-headless.js"></script>
+</body>
+</html>
+

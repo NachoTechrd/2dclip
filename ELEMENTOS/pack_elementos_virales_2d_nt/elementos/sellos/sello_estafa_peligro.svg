@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="100%" height="100%">
+  <defs>
+    <filter id="scamShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#020617" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <g transform="rotate(-9 200 110)" filter="url(#scamShadow)">
+    <rect x="22" y="36" width="356" height="148" rx="18" fill="#7f1d1d" fill-opacity="0.92" stroke="#f43f5e" stroke-width="10"/>
+    <rect x="34" y="48" width="332" height="124" rx="12" fill="none" stroke="#fda4af" stroke-width="3"/>
+    <text x="200" y="106" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="36" fill="#fef08a" letter-spacing="2">⚠ ALERTA ESTAFA</text>
+    <text x="200" y="148" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="20" fill="#ffffff" letter-spacing="3">NO CAIGAS AQUÍ</text>
+  </g>
+</svg>
