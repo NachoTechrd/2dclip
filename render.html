@@ -16,17 +16,44 @@
       overflow: hidden !important;
       background: #050811 !important;
     }
-    #headless-stage-root {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    body.clean-record-mode #headless-stage-root {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
+      background: #050811 !important;
     }
-    #video-stage {
+    body.clean-record-mode #headless-stage-root #video-stage.aspect-9-16 {
+      width: 540px !important;
+      height: 960px !important;
+      max-width: none !important;
+      max-height: none !important;
+      flex: 0 0 auto !important;
+      margin: 0 !important;
       border-radius: 0 !important;
       box-shadow: none !important;
+      border: none !important;
+      transform: scale(2) !important;
+      transform-origin: center center !important;
+    }
+    body.clean-record-mode #headless-stage-root #video-stage.aspect-1-1 {
+      width: 540px !important;
+      height: 540px !important;
+      max-width: none !important;
+      max-height: none !important;
+      flex: 0 0 auto !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      transform: scale(2) !important;
+      transform-origin: center center !important;
     }
     .nt-stage-text-editable {
       outline: none !important;

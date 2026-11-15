@@ -157,8 +157,8 @@ async function main() {
   } = payload;
 
   const isSquare = aspectRatio === '1:1';
-  const viewport = isSquare ? { width: 540, height: 540 } : { width: 540, height: 960 };
   const videoSize = isSquare ? { width: 1080, height: 1080 } : { width: 1080, height: 1920 };
+  const viewport = { ...videoSize };
 
   const tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), '2dclip-worker-'));
   let staticServer = null;
@@ -195,7 +195,7 @@ async function main() {
 
     const context = await browser.newContext({
       viewport,
-      deviceScaleFactor: 2,
+      deviceScaleFactor: 1,
       recordVideo: {
         dir: tmpDir,
         size: videoSize,
